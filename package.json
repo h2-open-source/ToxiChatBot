@@ -1,0 +1,25 @@
+{
+  "name": "toxichatbot",
+  "version": "0.0.1",
+  "description": "A Telegram group management bot",
+  "main": "index.js",
+  "dependencies": {
+    "telegraf": "^3.27.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@notabug.org:jimmyh/ToxiChatBot.git"
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "javascript",
+    "node"
+  ],
+  "author": "Jimmy Hogoboom",
+  "license": "AGPL-3.0-or-later"
+}
