@@ -14,7 +14,6 @@ console.log(hash);
 bot.telegram.setWebhook(`https://948693f0.ngrok.io/${hash}`);
 
 const app = express();
-//app.get('/', (req, res) => res.send('Hello World!'));
 app.use(bot.webhookCallback(`/${hash}`));
 app.listen(3000, () => {
   console.log('Example app listening on port 3000!')

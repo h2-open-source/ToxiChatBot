@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+      "baseUrl": ".",
+      "paths": { "*": ["types/*"] },
+        "target": "es6",
+        "checkJs": true
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}

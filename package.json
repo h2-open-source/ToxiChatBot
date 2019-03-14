@@ -2,8 +2,9 @@
   "name": "toxichatbot",
   "version": "0.0.1",
   "description": "A Telegram group management bot",
-  "main": "server.js",
+  "main": "index.js",
   "dependencies": {
+    "babel-register": "^6.26.0",
     "express": "^4.16.4",
     "localenv": "^0.2.2",
     "telegraf": "^3.27.1"
