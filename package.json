@@ -4,6 +4,7 @@
   "description": "A Telegram group management bot",
   "main": "server.js",
   "dependencies": {
+    "express": "^4.16.4",
     "localenv": "^0.2.2",
     "telegraf": "^3.27.1"
   },
