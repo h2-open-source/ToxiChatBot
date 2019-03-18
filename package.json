@@ -23,8 +23,10 @@
     "eslint-plugin-import": "^2.16.0"
   },
   "scripts": {
-    "start": "nodemon --exec babel-node ./index.js",
-    "test": "./node_modules/.bin/mocha --recursive --require @babel/register"
+    "start": "nodemon --exec babel-node ./src/index.js",
+    "test": "./node_modules/.bin/mocha --recursive --require @babel/register",
+    "build": "babel src --out-dir ./dist --source-maps",
+    "serve": "node ./dist/index.js"
   },
   "repository": {
     "type": "git",
