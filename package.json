@@ -3,25 +3,28 @@
   "version": "0.0.1",
   "description": "A Telegram group management bot",
   "main": "index.js",
-  "babel": {
-    "presets": [
-      "env"
-    ]
-  },
   "dependencies": {
-    "babel-preset-env": "^1.7.0",
-    "babel-register": "^6.26.0",
     "express": "^4.16.4",
     "localenv": "^0.2.2",
+    "mongoose": "^5.4.19",
     "telegraf": "^3.27.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.4",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/register": "^7.0.0",
+    "mocha": "^6.0.2",
+    "chai": "^4.2.0",
+    "nodemon": "^1.18.10",
     "eslint": "^5.15.2",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.16.0"
   },
   "scripts": {
-    "test": "mocha"
+    "start": "nodemon --exec babel-node ./index.js",
+    "test": "./node_modules/.bin/mocha --recursive --require @babel/register"
   },
   "repository": {
     "type": "git",

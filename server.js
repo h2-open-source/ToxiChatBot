@@ -3,7 +3,7 @@ import localenv from 'localenv';
 import express from 'express';
 import crypto from 'crypto';
 import logError, * as log from './utils/log';
-import bot from './bot';
+import bot from './modules/bot';
 
 bot.start(({ reply }) => reply('Hello!'));
 bot.help(({ reply }) => { reply("Here's what I can do: "); });

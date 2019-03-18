@@ -1,0 +1,8 @@
+{
+  "mongdb": {
+    "server": "localhost:27017",
+    "database": "toxichatbot",
+    "user": null,
+    "password": null
+  }
+}
