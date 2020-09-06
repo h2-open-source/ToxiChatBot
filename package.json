@@ -15,12 +15,12 @@
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.3.4",
     "@babel/register": "^7.0.0",
-    "mocha": "^6.0.2",
     "chai": "^4.2.0",
-    "nodemon": "^1.18.10",
     "eslint": "^5.15.2",
     "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.16.0"
+    "eslint-plugin-import": "^2.16.0",
+    "mocha": "^6.0.2",
+    "nodemon": "^1.18.10"
   },
   "scripts": {
     "start": "nodemon --exec babel-node ./src/index.js",

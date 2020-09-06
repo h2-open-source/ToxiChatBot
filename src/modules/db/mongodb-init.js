@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
-import { mongodb } from '../../config/mongodb-config';
 import * as log from '../../utils/log';
+
+mongoose.set('useFindAndModify', false);
 
 function prepareConnectionString(config) {
   let connectionString = 'mongodb://';
@@ -16,6 +17,12 @@ function prepareConnectionString(config) {
 
 function init() {
   const options = {};
+  const mongodb = {
+    user: process.env.MONGO_USER,
+    password: process.env.MONGO_PASSWORD,
+    server: process.env.MONGO_SERVER,
+    database: process.env.MONGO_DATABASE,
+  };
   const connectionString = prepareConnectionString(mongodb);
 
   mongoose.connect(connectionString, options)
