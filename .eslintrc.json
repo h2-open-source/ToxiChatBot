@@ -13,6 +13,7 @@
         "sourceType": "module"
     },
     "rules": {
-        "import/extensions": ["never"]
+        "import/extensions": ["never"],
+        "no-unused-vars": "warn"
     }
 }
