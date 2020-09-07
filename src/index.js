@@ -8,7 +8,9 @@ import middleware from './handlers/middleware';
 import start from './handlers/middleware/start';
 import mongoinit from './modules/db/mongodb-init';
 
-const url = process.argv[2] || process.env.BOT_URL;
+// If not in the production environment, try to use the URL argument.
+// If in production, or if the URL argument is absent, use the environment variable.
+const url = (process.env.NODE_ENV !== 'production' && process.argv[2]) || process.env.BOT_URL;
 
 bot.start(start);
 bot.help(({ reply }) => { reply("Here's what I can do: "); });
