@@ -11,5 +11,7 @@ const logError = err => console.error(err);
  */
 const logMessage = message => console.log(message);
 
-export default logError;
-export { logMessage };
+export {
+    logMessage,
+    logError,
+};

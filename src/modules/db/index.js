@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import logError, { logMessage } from '../../utils/log';
+import { logError, logMessage } from '../../utils/log';
 
 // TODO: move to its own file
 const userSchema = new mongoose.Schema({
