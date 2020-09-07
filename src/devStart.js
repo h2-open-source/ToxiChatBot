@@ -4,18 +4,19 @@ import { logMessage } from './utils/log';
 
 const port = process.env.PORT || 3000;
 
-ngrok.connect({ port: port })
+ngrok
+    .connect({ port: port })
     .then((url) =>
         nodemon({
             script: `./src/index.js`,
             args: [url],
-            ext: 'js'
+            ext: 'js',
         })
-        .on('start', async () => {
-            logMessage(`Server now available at ${url}`)
-        })
-        .on('quit', async () => {
-            await ngrok.kill()
-        })
+            .on('start', async () => {
+                logMessage(`Server now available at ${url}`);
+            })
+            .on('quit', async () => {
+                await ngrok.kill();
+            })
     )
     .catch(async () => await ngrok.kill());

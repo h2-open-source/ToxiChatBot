@@ -3,7 +3,7 @@
  *
  * @param {Error} err
  */
-const logError = err => console.error(err);
+const logError = (err) => console.error(err);
 
 /**
  *
@@ -11,7 +11,4 @@ const logError = err => console.error(err);
  */
 const logMessage = (...message) => console.log(...message);
 
-export {
-    logMessage,
-    logError,
-};
+export { logMessage, logError };
