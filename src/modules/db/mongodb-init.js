@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 import * as log from '../../utils/log';
 
 mongoose.set('useFindAndModify', false);
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useUnifiedTopology', true);
 
 function prepareConnectionString(config) {
   let connectionString = 'mongodb://';
