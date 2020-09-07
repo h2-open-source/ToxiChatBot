@@ -24,7 +24,8 @@
     "nodemon": "^1.18.10"
   },
   "scripts": {
-    "start": "nodemon --exec babel-node ./src/index.js",
+    "start": "babel-node ./src/devStart.js",
+    "startold": "nodemon --exec babel-node ./src/index.js",
     "test": "./node_modules/.bin/mocha --recursive --require @babel/register",
     "build": "babel src --out-dir ./dist --source-maps",
     "serve": "node ./dist/index.js"
