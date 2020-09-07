@@ -9,7 +9,7 @@ const logError = err => console.error(err);
  *
  * @param {string} message
  */
-const logMessage = message => console.log(message);
+const logMessage = (...message) => console.log(...message);
 
 export {
     logMessage,
