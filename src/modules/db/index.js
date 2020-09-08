@@ -34,6 +34,8 @@ export const addUser = async (telegramUser) => {
  * Find a user stored in persistence.
  *
  * @param { import('telegraf/typings/telegram-types').User } telegramUser The Telegram user to find
+ *
+ * @returns { object } The stored User
  */
 export const findUser = async (telegramUser) => {
     try {
