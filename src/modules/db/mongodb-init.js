@@ -31,7 +31,7 @@ function init() {
         .connect(connectionString, options)
         .then((result) => {
             log.logMessage(
-                `MongoDB connection successful. DB: ${connectionString} - result: ${result}`
+                `MongoDB connection successful. DB: ${connectionString}`
             );
         })
         .catch((error) => {
