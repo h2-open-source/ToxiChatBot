@@ -3,7 +3,7 @@
         "browser": true,
         "es6": true
     },
-    "extends": "airbnb-base",
+    "extends": ["airbnb-base", "prettier"],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
@@ -14,6 +14,8 @@
     },
     "rules": {
         "import/extensions": ["never"],
-        "no-unused-vars": "warn"
+        "no-unused-vars": "warn",
+        "indent": ["warn", 4],
+        "no-underscore-dangle":  ["error", { "allow": ["_id"] }]
     }
 }
