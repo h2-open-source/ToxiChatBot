@@ -17,6 +17,7 @@ const url =
 bot.start(start);
 bot.help(({ reply }) => {
     reply("Here's what I can do: ");
+    // TODO: Add help text
 });
 
 bot.use(middleware);

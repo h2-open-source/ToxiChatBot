@@ -43,6 +43,7 @@ export const findUser = async (telegramUser) => {
     } catch (err) {
         logError(err);
     }
+    return null;
 };
 
 /**

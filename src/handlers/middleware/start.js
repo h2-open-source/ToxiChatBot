@@ -1,16 +1,6 @@
 import { findUser, addUser, addChat } from '../../modules/db/index';
 import { logMessage } from '../../utils/log';
-
-export default async (ctx) => {
-    // Record user only if in DM.
-    if (ctx.chat.type === 'private') {
-        await handlePrivateStart(ctx);
-    } else {
-        await handleGroupStart(ctx);
-    }
-
-    // Now user can send a command to see all their groups, see list of opted-in users for each, and generate button for that group
-};
+import { isPrivateChat } from '../../utils/telegramUtils';
 
 /**
  *  Persist the user and let them know how to proceed.
@@ -45,4 +35,15 @@ const handleGroupStart = async (ctx) => {
             "Hol' up. Please send the /start command in a private message with me first."
         );
     }
+};
+
+export default async (ctx) => {
+    // Record user only if in DM.
+    if (isPrivateChat(ctx)) {
+        await handlePrivateStart(ctx);
+    } else {
+        await handleGroupStart(ctx);
+    }
+
+    // Now user can send a command to see all their groups, see list of opted-in users for each, and generate button for that group
 };
