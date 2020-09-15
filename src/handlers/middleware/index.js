@@ -2,6 +2,7 @@ import { Extra, Composer } from 'telegraf';
 
 import addedToGroup from './addedToGroup';
 import { isPrivateChat } from '../../utils/telegramUtils';
+import { addUserOptIn } from '../../modules/db';
 
 const composer = new Composer();
 
@@ -27,7 +28,10 @@ composer.command('generate', async (ctx, next) => {
 });
 
 composer.action('optin', async (ctx, next) => {
-    // TODO: record response
+    const { chat } = ctx;
+    const { from } = ctx.callbackQuery;
+
+    await addUserOptIn(chat, from);
 
     ctx.answerCbQuery('Your response has been recorded', false);
 

@@ -13,6 +13,12 @@ const userSchema = new mongoose.Schema({
 });
 const User = mongoose.model('User', userSchema);
 
+const optinSchema = new mongoose.Schema({
+    chatId: { type: Number, required: true, unique: true },
+    users: [Number],
+});
+const Optin = mongoose.model('Optin', optinSchema);
+
 /**
  * Persist a user.
  *
@@ -68,7 +74,22 @@ export const addChat = async (telegramChat, telegramUser) => {
     }
 };
 
-export const addUserOptIn = (user, group) => {};
+export const addUserOptIn = async (telegramChat, telegramUser) => {
+    try {
+        const newChat = await Optin.findOneAndUpdate(
+            { chatId: telegramChat.id },
+            {
+                $push: { users: telegramUser.id },
+                $setOnInsert: { id: telegramChat.id },
+            },
+            { upsert: true, new: true }
+        );
+
+        if (newChat === null) throw Error('Failed to create optin chat');
+    } catch (err) {
+        logError(err);
+    }
+};
 
 export default {
     addUser,
