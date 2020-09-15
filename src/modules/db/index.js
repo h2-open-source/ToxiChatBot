@@ -4,12 +4,12 @@ import { logError, logMessage } from '../../utils/log';
 // TODO: move schemas (and models?) to their own files
 const chatSchema = new mongoose.Schema({
     id: { type: Number, required: true, unique: true },
+    users: [mongoose.Types.ObjectId],
 });
 const Chat = mongoose.model('Chat', chatSchema);
 
 const userSchema = new mongoose.Schema({
     id: { type: Number, required: true, unique: true },
-    linkedChats: [mongoose.Types.ObjectId],
 });
 const User = mongoose.model('User', userSchema);
 
@@ -47,25 +47,22 @@ export const findUser = async (telegramUser) => {
 };
 
 /**
- * Persist chat and link it to the user.
+ * Persist chat and add the user to it.
  *
  * @param { import('telegraf/typings/telegram-types').Chat } chat The Telegram chat object to add
  * @param { import('telegraf/typings/telegram-types').User } user The Telegram user object to link the chat to
  */
-export const addChat = async (chat, user) => {
+export const addChat = async (telegramChat, telegramUser) => {
     try {
+        const user = await findUser(telegramUser);
+
         const newChat = await Chat.findOneAndUpdate(
-            { id: chat.id },
-            { $setOnInsert: { id: chat.id } },
+            { id: telegramChat.id },
+            { $setOnInsert: { id: telegramChat.id, users: [user._id] } },
             { upsert: true, new: true }
         );
 
-        if (newChat === null) throw Error('Failed to create chat');
-
-        await User.updateOne(
-            { id: user.id },
-            { $addToSet: { linkedChats: newChat._id } }
-        );
+        if (newChat === null) throw Error('Failed to create telegramChat');
     } catch (err) {
         logError(err);
     }
