@@ -4,9 +4,10 @@ import express from 'express';
 import crypto from 'crypto';
 import { logMessage, logError } from './utils/log';
 import bot from './modules/bot';
+import mongoinit from './modules/db/mongodb-init';
 import middleware from './handlers/middleware';
 import start from './handlers/middleware/start';
-import mongoinit from './modules/db/mongodb-init';
+import help from './handlers/middleware/help';
 
 // If not in the production environment, try to use the URL argument.
 // If in production, or if the URL argument is absent, use the environment variable.
@@ -15,10 +16,7 @@ const url =
     process.env.BOT_URL;
 
 bot.start(start);
-bot.help(({ reply }) => {
-    reply("Here's what I can do: ");
-    // TODO: Add help text
-});
+bot.help(help);
 
 bot.use(middleware);
 

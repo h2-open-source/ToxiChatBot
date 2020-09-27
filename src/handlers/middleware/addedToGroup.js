@@ -1,4 +1,3 @@
-// Unused
 const addedToGroupHandler = async (ctx, next) => {
     const { message } = ctx;
 
