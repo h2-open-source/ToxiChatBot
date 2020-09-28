@@ -53,6 +53,40 @@ export const findUser = async (telegramUser) => {
 };
 
 /**
+ * Retrieve a list of all stored Chats in which the telegramUser has initialized the bot
+ *
+ * @param { import('telegraf/typings/telegram-types').User } telegramUser
+ *
+ * @returns { Array } An array of stored Chats
+ */
+export const findChatsForUser = async (telegramUser) => {
+    try {
+        const user = await findUser(telegramUser);
+        return await Chat.find({ users: user._id });
+    } catch (err) {
+        logError(err);
+    }
+    return null;
+};
+
+/**
+ * Retrieve a stored chat by its Telegram ID
+ *
+ * @param { Number } chatId
+ *
+ * @returns { Object } The Chat document
+ */
+export const findChatOptins = async (chatId) => {
+    try {
+        return await Optin.findOne({ chatId });
+    } catch (err) {
+        logError(err);
+    }
+
+    return null;
+};
+
+/**
  * Persist chat and add the user to it.
  *
  * @param { import('telegraf/typings/telegram-types').Chat } chat The Telegram chat object to add

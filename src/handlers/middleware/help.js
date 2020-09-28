@@ -20,5 +20,5 @@ export default async (ctx, next) => {
         await handleGroup(ctx);
     }
 
-    next();
+    return next();
 };

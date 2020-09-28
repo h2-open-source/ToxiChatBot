@@ -54,5 +54,5 @@ export default async (ctx, next) => {
     }
 
     // Now user can send a command to see all their groups, see list of opted-in users for each, and generate button for that group
-    next();
+    return next();
 };
