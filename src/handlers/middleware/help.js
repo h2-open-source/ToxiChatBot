@@ -13,10 +13,12 @@ const handleGroup = ({ reply }) => {
     reply('Message me directly for more options');
 };
 
-export default async (ctx) => {
+export default async (ctx, next) => {
     if (isPrivateChat(ctx)) {
         await handlePrivate(ctx);
     } else {
         await handleGroup(ctx);
     }
+
+    next();
 };
