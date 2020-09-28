@@ -21,6 +21,7 @@ const listGroup = async (ctx, next) => {
     if (!chat || !chat.users) {
         ctx.reply('No users have clicked the button in that group yet 😢');
     } else {
+        // TODO: Show the 'typing' chat action
         const getUsers = chat.users.map((u) => ctx.telegram.getChat(u));
         const users = await Promise.all(getUsers);
 

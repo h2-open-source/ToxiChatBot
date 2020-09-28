@@ -1,5 +1,6 @@
 import { Extra } from 'telegraf';
 import { findChatsForUser } from '../../modules/db';
+import { isPrivateChat } from '../../utils/telegramUtils';
 
 /**
  *
@@ -7,8 +8,21 @@ import { findChatsForUser } from '../../modules/db';
  * @param { Function } next
  */
 const listHandler = async (ctx, next) => {
+    if (!isPrivateChat(ctx)) {
+        ctx.reply('Try this command in a private chat with me.');
+        return next();
+    }
+
     // Get Chats for user
     const chats = await findChatsForUser(ctx.from);
+
+    if (chats.length < 1) {
+        ctx.reply(
+            'You have no groups set up yet. Try calling /start in your group.'
+        );
+        return next();
+    }
+
     const getChats = chats.map((c) => ctx.telegram.getChat(c.id));
     const chatsDetails = await Promise.all(getChats);
 

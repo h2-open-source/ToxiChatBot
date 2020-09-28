@@ -11,10 +11,12 @@ import { isPrivateChat, isUserAdmin } from '../../utils/telegramUtils';
 const handlePrivateStart = async (ctx) => {
     await addUser(ctx.from);
 
-    ctx.reply(
+    await ctx.reply(
         'Hello! Add me to the group you want to manage and run the /start command there to get this show on the road.'
     );
-    ctx.reply("If you're not sure what to do next, use the /help command.");
+    await ctx.reply(
+        "If you're not sure what to do next, use the /help command."
+    );
 };
 
 /**
