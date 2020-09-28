@@ -1,6 +1,7 @@
+import Telegram from 'telegraf/telegram';
 import { findUser, addUser, addChat } from '../../modules/db/index';
 import { logMessage } from '../../utils/log';
-import { isPrivateChat } from '../../utils/telegramUtils';
+import { isPrivateChat, isUserAdmin } from '../../utils/telegramUtils';
 
 /**
  *  Persist the user and let them know how to proceed.
@@ -23,12 +24,19 @@ const handlePrivateStart = async (ctx) => {
  * @param { import('telegraf/typings/context').TelegrafContext } ctx A TelegrafContext for the start command message
  */
 const handleGroupStart = async (ctx) => {
+    if (!(await isUserAdmin(ctx, ctx.chat.id, ctx.from.id))) {
+        ctx.reply('Only admins can use this bot.');
+        return;
+    }
+
     const user = await findUser(ctx.from);
+
     if (user) {
         await addChat(ctx.chat, ctx.from);
 
-        ctx.reply(
-            'Success! Now you can manage your settings for this group back in our private chat.'
+        ctx.telegram.sendMessage(
+            ctx.from.id,
+            'Success! Now you can manage your settings for this group.'
         );
     } else {
         ctx.reply(
