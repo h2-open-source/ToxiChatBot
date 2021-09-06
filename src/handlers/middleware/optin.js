@@ -1,5 +1,11 @@
 import { addUserOptIn } from '../../modules/db';
 
+/**
+ * Record that user clicked the opt-in button
+ *
+ * @param { import('telegraf/typings/context').TelegrafContext } ctx
+ * @param { Function } next
+ */
 export default async (ctx, next) => {
     const { chat } = ctx;
     const { from } = ctx.callbackQuery;

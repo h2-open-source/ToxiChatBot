@@ -1,3 +1,9 @@
+/**
+ * Send an introduction when the bot is added to a group.
+ *
+ * @param { import('telegraf/typings/context').TelegrafContext } ctx
+ * @param { Function } next
+ */
 const addedToGroupHandler = async (ctx, next) => {
     const { message } = ctx;
 

@@ -3,6 +3,11 @@ import { findChatsForUser } from '../../modules/db';
 import { isPrivateChat } from '../../utils/telegramUtils';
 
 /**
+ * Responds to user request for a list of groups to which they've sent opt-in buttons.
+ *
+ * Provides a list of buttons, one for each group this user has created an opt-in button,
+ * each of which the use can click to view the list of users who have clicked the opt-in
+ * button in that group.
  *
  * @param { import('telegraf/typings/context').TelegrafContext } ctx
  * @param { Function } next

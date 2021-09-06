@@ -10,6 +10,7 @@ const formatName = (user) => {
 };
 
 /**
+ * Replies with list of users that have clicked the opt-in button in the specified group.
  *
  * @param { import('telegraf/typings/context').TelegrafContext } ctx
  * @param { Function } next
