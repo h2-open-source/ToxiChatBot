@@ -41,5 +41,5 @@ MONGO_PASSWORD=
 yarn start
 ```
 
-This will create an ngrok tunnel, then sart up the dev server behind it and automatically update the Telegram webhook to point at your tunnel.
+This will create an ngrok tunnel, then start up the dev server behind it and automatically update the Telegram webhook to point at your tunnel.
 
