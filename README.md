@@ -3,22 +3,24 @@
 A Telegram bot written in JavaScript.
 
 ## To Start:
-Get some Node
+### Get some Node
 ```
 nvm install node
 ```
 
-Get Yarn:
+### Get Yarn:
 ```
 npm install --global yarn
 ```
 
-Install:
+### Install packages:
 ```
 yarn
 ```
 
-Set up an environment file called `.env.local` with the appropriate values:
+### Install and start Mongo, or otherwise obtain accesss to a MongoDB instance.
+
+### Set up an environment file called `.env.local` with the appropriate values:
 ```
 # optional
 # BOT_URL=
@@ -31,9 +33,10 @@ MONGO_USER=
 MONGO_PASSWORD=
 ```
 
-Go:
+### Go:
 ```
 yarn start
 ```
 
-This will create an ngrok tunnel, then sart up the dev server behind it.
+This will create an ngrok tunnel, then sart up the dev server behind it and automatically update the Telegram webhook to point at your tunnel.
+

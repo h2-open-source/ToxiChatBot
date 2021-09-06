@@ -29,10 +29,10 @@ bot.telegram.setWebhook(`${url}/${hash}`);
 const app = express();
 app.use(bot.webhookCallback(`/${hash}`));
 app.listen(3000, () => {
-    logMessage('Bot listening on port 3000!');
-
     // TODO: stop the app if connection fails
     mongoinit();
+
+    logMessage('Bot listening on port 3000!');
 });
 
 bot.catch(logError);
