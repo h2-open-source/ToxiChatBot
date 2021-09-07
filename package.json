@@ -22,7 +22,8 @@
         "eslint-plugin-import": "^2.16.0",
         "mocha": "^6.0.2",
         "ngrok": "^3.3.0",
-        "nodemon": "^2.0.12"
+        "nodemon": "^2.0.12",
+        "prettier": "^2.3.2"
     },
     "scripts": {
         "start": "babel-node ./src/devStart.js",
