@@ -15,9 +15,8 @@ const handlePrivate = async ({ reply }) => {
 /**
  * @param { import('telegraf/typings/context').TelegrafContext } ctx.reply
  */
-const handleGroup = async ({ reply }) => {
-  await reply('Message me directly for more options');
-};
+const handleGroup = async ({ reply }) =>
+  reply('Message me directly for more options');
 
 /**
  * Send help message
