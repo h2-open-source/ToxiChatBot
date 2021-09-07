@@ -7,35 +7,35 @@ mongoose.set('useUnifiedTopology', true);
 mongoose.set('useCreateIndex', true);
 
 const prepareConnectionString = (config) => {
-	let connectionString = 'mongodb://';
+  let connectionString = 'mongodb://';
 
-	if (config.user) {
-		connectionString += `${config.user}:${config.password}@`;
-	}
+  if (config.user) {
+    connectionString += `${config.user}:${config.password}@`;
+  }
 
-	connectionString += `${config.server}/${config.database}`;
+  connectionString += `${config.server}/${config.database}`;
 
-	return connectionString;
+  return connectionString;
 };
 
 export const init = () => {
-	const options = {};
-	const mongodb = {
-		user: process.env.MONGO_USER,
-		password: process.env.MONGO_PASSWORD,
-		server: process.env.MONGO_SERVER,
-		database: process.env.MONGO_DATABASE,
-	};
-	const connectionString = prepareConnectionString(mongodb);
+  const options = {};
+  const mongodb = {
+    user: process.env.MONGO_USER,
+    password: process.env.MONGO_PASSWORD,
+    server: process.env.MONGO_SERVER,
+    database: process.env.MONGO_DATABASE,
+  };
+  const connectionString = prepareConnectionString(mongodb);
 
-	mongoose
-		.connect(connectionString, options)
-		.then(() => {
-			log.logMessage(`MongoDB connection successful. DB: ${connectionString}`);
-		})
-		.catch((error) => {
-			log.logError(
-				`Error occurred while connecting to DB ${connectionString}: ${error}`
-			);
-		});
+  mongoose
+    .connect(connectionString, options)
+    .then(() => {
+      log.logMessage(`MongoDB connection successful. DB: ${connectionString}`);
+    })
+    .catch((error) => {
+      log.logError(
+        `Error occurred while connecting to DB ${connectionString}: ${error}`
+      );
+    });
 };

@@ -12,8 +12,8 @@ import { logMessage, logError } from './utils/log';
 // If not in the production environment, try to use the URL argument.
 // If in production, or if the URL argument is absent, use the environment variable.
 const url =
-	(process.env.NODE_ENV !== 'production' && process.argv[2]) ||
-	process.env.BOT_URL;
+  (process.env.NODE_ENV !== 'production' && process.argv[2]) ||
+  process.env.BOT_URL;
 
 bot.start(start);
 bot.help(help);
@@ -21,18 +21,18 @@ bot.help(help);
 bot.use(middleware);
 
 const hash = crypto
-	.createHash('sha256')
-	.update(process.env.BOT_TOKEN)
-	.digest('base64');
+  .createHash('sha256')
+  .update(process.env.BOT_TOKEN)
+  .digest('base64');
 bot.telegram.setWebhook(`${url}/${hash}`);
 
 const app = express();
 app.use(bot.webhookCallback(`/${hash}`));
 app.listen(3000, () => {
-	// TODO: stop the app if connection fails
-	init();
+  // TODO: stop the app if connection fails
+  init();
 
-	logMessage('Bot listening on port 3000!');
+  logMessage('Bot listening on port 3000!');
 });
 
 bot.catch(logError);
