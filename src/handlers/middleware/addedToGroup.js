@@ -2,9 +2,8 @@
  * Send an introduction when the bot is added to a group.
  *
  * @param { import('telegraf/typings/context').TelegrafContext } ctx
- * @param { Function } next
  */
-export const addedToGroup = async (ctx, next) => {
+export const addedToGroup = async (ctx) => {
   const { message } = ctx;
 
   const { username } = await ctx.telegram.getMe();
@@ -13,9 +12,7 @@ export const addedToGroup = async (ctx, next) => {
     (user) => user.username === username
   );
 
-  if (botWasAdded) {
-    await ctx.reply(`Hi there, I'm ${process.env.BOT_NAME}`);
-  }
-
-  return next();
+  return botWasAdded
+    ? ctx.reply(`Hi there, I'm ${process.env.BOT_NAME}`)
+    : null;
 };

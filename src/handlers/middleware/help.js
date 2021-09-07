@@ -24,12 +24,5 @@ const handleGroup = async ({ reply }) =>
  * @param { import('telegraf/typings/context').TelegrafContext } ctx
  * @param { Function } next
  */
-export const help = async (ctx, next) => {
-  if (isPrivateChat(ctx)) {
-    await handlePrivate(ctx);
-  } else {
-    await handleGroup(ctx);
-  }
-
-  return next();
-};
+export const help = async (ctx) =>
+  isPrivateChat(ctx) ? handlePrivate(ctx) : handleGroup(ctx);
