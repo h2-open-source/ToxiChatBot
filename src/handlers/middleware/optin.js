@@ -6,13 +6,13 @@ import { addUserOptIn } from '../../modules/db';
  * @param { import('telegraf/typings/context').TelegrafContext } ctx
  * @param { Function } next
  */
-export default async (ctx, next) => {
-    const { chat } = ctx;
-    const { from } = ctx.callbackQuery;
+export const optin = async (ctx, next) => {
+  const { chat } = ctx;
+  const { from } = ctx.callbackQuery;
 
-    await addUserOptIn(chat, from);
+  await addUserOptIn(chat, from);
 
-    ctx.answerCbQuery('Your response has been recorded', false);
+  ctx.answerCbQuery('Your response has been recorded', false);
 
-    return next();
+  return next();
 };
