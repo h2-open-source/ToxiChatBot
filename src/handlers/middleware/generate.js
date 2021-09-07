@@ -16,8 +16,13 @@ export const generate = async (ctx) => {
   }
 
   if (isPrivateChat(ctx)) {
+    // Below commented because the forwarded message doesn't show the button.
+    // TODO: Figure out how to make the button forward
+    // await ctx.reply(
+    //   'Forward the following message to your group, or re-run this command in the group.'
+    // );
     return ctx.reply(
-      'Forward the following message to your group, or re-run this command in the group.'
+      'Run this command in a group to generate a button for its users to click.'
     );
   }
 
