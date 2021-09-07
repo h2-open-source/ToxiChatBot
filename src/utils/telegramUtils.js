@@ -12,6 +12,7 @@ export const isPrivateChat = (ctx) => ctx.chat.type === 'private';
  * @param {Number} chatId The Telegram chat ID
  * @param {Number} userId The Telegram user ID
  */
+// TODO: chatId and userId are always present in ctx. Remove those parameters and access them internally here
 export const isUserAdmin = async (ctx, chatId, userId) => {
   try {
     const admins = await ctx.getChatAdministrators(chatId);

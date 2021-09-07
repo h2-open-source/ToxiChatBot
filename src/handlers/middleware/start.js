@@ -12,7 +12,10 @@ const handlePrivateStart = async (ctx) => {
   await ctx.reply(
     'Hello! Add me to the group you want to manage and run the /start command there to get this show on the road.'
   );
-  await ctx.reply("If you're not sure what to do next, use the /help command.");
+
+  return ctx.reply(
+    "If you're not sure what to do next, use the /help command."
+  );
 };
 
 /**
@@ -23,8 +26,7 @@ const handlePrivateStart = async (ctx) => {
  */
 const handleGroupStart = async (ctx) => {
   if (!(await isUserAdmin(ctx, ctx.chat.id, ctx.from.id))) {
-    ctx.reply('Only admins can use this bot.');
-    return;
+    return ctx.reply('Only admins can use this bot.');
   }
 
   const user = await findUser(ctx.from);
@@ -32,25 +34,18 @@ const handleGroupStart = async (ctx) => {
   if (user) {
     await addChat(ctx.chat, ctx.from);
 
-    ctx.telegram.sendMessage(
+    return ctx.telegram.sendMessage(
       ctx.from.id,
       'Success! Now you can manage your settings for this group.'
     );
-  } else {
-    ctx.reply(
-      "Hol' up. Please send the /start command in a private message with me first."
-    );
   }
+
+  return ctx.reply(
+    "Hol' up. Please send the /start command in a private message with me first."
+  );
 };
 
-export const start = async (ctx, next) => {
+export const start = async (ctx) =>
   // Record user only if in DM.
-  if (isPrivateChat(ctx)) {
-    await handlePrivateStart(ctx);
-  } else {
-    await handleGroupStart(ctx);
-  }
-
-  // Now user can send a command to see all their groups, see list of opted-in users for each, and generate button for that group
-  return next();
-};
+  isPrivateChat(ctx) ? handlePrivateStart(ctx) : handleGroupStart(ctx);
+// Now user can send a command to see all their groups, see list of opted-in users for each, and generate button for that group

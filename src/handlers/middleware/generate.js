@@ -9,26 +9,27 @@ import { isPrivateChat, isUserAdmin } from '../../utils/telegramUtils';
  * generated message to the group they want to track.
  *
  * @param { import('telegraf/typings/context').TelegrafContext } ctx
- * @param { Function } next
  */
-export const generate = async (ctx, next) => {
+export const generate = async (ctx) => {
   if (!(await isUserAdmin(ctx, ctx.chat.id, ctx.from.id))) {
-    await ctx.reply('Only admins can use this bot.');
-    return next();
+    return ctx.reply('Only admins can use this bot.');
   }
 
   if (isPrivateChat(ctx)) {
-    await ctx.reply(
-      'Forward the following message to your group, or re-run this command in the group.'
+    // Below commented because the forwarded message doesn't show the button.
+    // TODO: Figure out how to make the button forward
+    // await ctx.reply(
+    //   'Forward the following message to your group, or re-run this command in the group.'
+    // );
+    return ctx.reply(
+      'Run this command in a group to generate a button for its users to click.'
     );
   }
 
-  await ctx.reply(
+  return ctx.reply(
     'Do you want to stay in this group? Click this button.',
     Extra.HTML().markup((m) =>
       m.inlineKeyboard([m.callbackButton('I want to stay!', 'optin')])
     )
   );
-
-  return next();
 };
