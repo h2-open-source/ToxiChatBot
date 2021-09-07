@@ -1,4 +1,4 @@
-import { addUserOptIn } from '../../modules/db';
+import { addUserOptIn } from 'modules/db';
 
 /**
  * Record that user clicked the opt-in button

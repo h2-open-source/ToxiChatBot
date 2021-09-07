@@ -1,4 +1,4 @@
-import { isPrivateChat } from '../../utils/telegramUtils';
+import { isPrivateChat } from 'utils/telegramUtils';
 
 /**
  * @param { import('telegraf/typings/context').TelegrafContext } ctx.reply
