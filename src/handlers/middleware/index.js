@@ -1,10 +1,9 @@
 import { Composer } from 'telegraf';
-
-import addedToGroup from './addedToGroup';
-import generate from './generate';
-import listHandler from './list';
-import optin from './optin';
-import listGroup from './listGroup';
+import { addedToGroup } from './addedToGroup';
+import { generate } from './generate';
+import { listHandler } from './list';
+import { listGroup } from './listGroup';
+import { optin } from './optin';
 
 const composer = new Composer();
 
@@ -17,4 +16,4 @@ composer.action(/^[list-]+(-[\d]+)$/, listGroup);
 
 composer.action('optin', optin);
 
-export default composer;
+export { composer as middleware };
