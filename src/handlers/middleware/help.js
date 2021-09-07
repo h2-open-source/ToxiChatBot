@@ -22,7 +22,6 @@ const handleGroup = async ({ reply }) =>
  * Send help message
  *
  * @param { import('telegraf/typings/context').TelegrafContext } ctx
- * @param { Function } next
  */
 export const help = async (ctx) =>
   isPrivateChat(ctx) ? handlePrivate(ctx) : handleGroup(ctx);
