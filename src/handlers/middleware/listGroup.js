@@ -1,4 +1,4 @@
-import { findChatOptins } from '../../modules/db';
+import { findChatOptins } from 'modules/db';
 
 const formatName = (user) => {
   const name =

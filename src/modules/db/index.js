@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { logError } from '../../utils/log';
+import { logError } from 'utils/log';
 
 // TODO: move schemas (and models?) to their own files
 const chatSchema = new mongoose.Schema({

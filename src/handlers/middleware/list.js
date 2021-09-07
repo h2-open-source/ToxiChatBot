@@ -1,6 +1,6 @@
 import { Extra } from 'telegraf';
-import { findChatsForUser } from '../../modules/db';
-import { isPrivateChat } from '../../utils/telegramUtils';
+import { findChatsForUser } from 'modules/db';
+import { isPrivateChat } from 'utils/telegramUtils';
 
 /**
  * Responds to user request for a list of groups to which they've sent opt-in buttons.

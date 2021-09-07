@@ -1,5 +1,5 @@
 import { Extra } from 'telegraf';
-import { isPrivateChat, isUserAdmin } from '../../utils/telegramUtils';
+import { isPrivateChat, isUserAdmin } from 'utils/telegramUtils';
 
 /**
  * Create an "opt-in" message.
