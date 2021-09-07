@@ -28,10 +28,9 @@ export const listHandler = async (ctx, next) => {
     return next();
   }
 
-  const getChats = await Promise.all(
+  const chatsDetails = await Promise.all(
     chats.map((c) => ctx.telegram.getChat(c.id))
   );
-  const chatsDetails = await Promise.all(getChats);
 
   await ctx.reply(
     'Choose a group below to see a list of users that clicked the button in that group.',
