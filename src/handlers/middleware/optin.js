@@ -7,12 +7,12 @@ import { addUserOptIn } from '../../modules/db';
  * @param { Function } next
  */
 export const optin = async (ctx, next) => {
-  const { chat } = ctx;
-  const { from } = ctx.callbackQuery;
+	const { chat } = ctx;
+	const { from } = ctx.callbackQuery;
 
-  await addUserOptIn(chat, from);
+	await addUserOptIn(chat, from);
 
-  ctx.answerCbQuery('Your response has been recorded', false);
+	ctx.answerCbQuery('Your response has been recorded', false);
 
-  return next();
+	return next();
 };

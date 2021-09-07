@@ -13,12 +13,12 @@ export const isPrivateChat = (ctx) => ctx.chat.type === 'private';
  * @param {Number} userId The Telegram user ID
  */
 export const isUserAdmin = async (ctx, chatId, userId) => {
-  try {
-    const admins = await ctx.getChatAdministrators(chatId);
-    return admins.some((admin) => admin.user.id === userId);
-  } catch (err) {
-    if (err.code === 400) return true;
-  }
+	try {
+		const admins = await ctx.getChatAdministrators(chatId);
+		return admins.some((admin) => admin.user.id === userId);
+	} catch (err) {
+		if (err.code === 400) return true;
+	}
 
-  return false;
+	return false;
 };

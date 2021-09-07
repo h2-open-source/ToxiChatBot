@@ -5,17 +5,17 @@
  * @param { Function } next
  */
 export const addedToGroup = async (ctx, next) => {
-  const { message } = ctx;
+	const { message } = ctx;
 
-  const { username } = await ctx.telegram.getMe();
+	const { username } = await ctx.telegram.getMe();
 
-  const botWasAdded = message.new_chat_members.some(
-    (user) => user.username === username
-  );
+	const botWasAdded = message.new_chat_members.some(
+		(user) => user.username === username
+	);
 
-  if (botWasAdded) {
-    ctx.reply(`Hi there, I'm ${process.env.BOT_NAME}`);
-  }
+	if (botWasAdded) {
+		ctx.reply(`Hi there, I'm ${process.env.BOT_NAME}`);
+	}
 
-  return next();
+	return next();
 };

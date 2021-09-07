@@ -1,24 +1,24 @@
 {
-  "env": {
-    "browser": true,
-    "es6": true
-  },
-  "extends": ["airbnb-base", "prettier"],
-  "globals": {
-    "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
-  },
-  "parserOptions": {
-    "ecmaVersion": 2018,
-    "sourceType": "module"
-  },
-  "rules": {
-    "import/extensions": ["never"],
-    "import/prefer-default-export": ["never"],
-    "import/no-default-export": ["warn"],
-    "comma-dangle": ["error", "always-multiline"],
-    "no-unused-vars": "warn",
-    "indent": ["warn", 2],
-    "no-underscore-dangle": ["error", { "allow": ["_id"] }]
-  }
+	"env": {
+		"browser": true,
+		"es6": true
+	},
+	"extends": ["airbnb-base", "prettier"],
+	"globals": {
+		"Atomics": "readonly",
+		"SharedArrayBuffer": "readonly"
+	},
+	"parserOptions": {
+		"ecmaVersion": 2018,
+		"sourceType": "module"
+	},
+	"rules": {
+		"import/extensions": ["never"],
+		"import/prefer-default-export": ["never"],
+		"import/no-default-export": ["warn"],
+		"comma-dangle": ["error", "always-multiline"],
+		"no-unused-vars": "warn",
+		"indent": ["error", "tab"],
+		"no-underscore-dangle": ["error", { "allow": ["_id"] }]
+	}
 }
