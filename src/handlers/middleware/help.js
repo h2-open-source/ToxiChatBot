@@ -3,10 +3,10 @@ import { isPrivateChat } from '../../utils/telegramUtils';
 /**
  * @param { import('telegraf/typings/context').TelegrafContext } ctx.reply
  */
-const handlePrivate = ({ reply }) => {
-  reply("Here's what I can do: ");
+const handlePrivate = async ({ reply }) => {
+  await reply("Here's what I can do: ");
   // TODO: Add better help text
-  reply(
+  await reply(
     '/generate - Create the opt-in button\n' +
       "/list - Show a list of all the groups your buttons were forwarded to and see who's clicked them"
   );
@@ -15,8 +15,8 @@ const handlePrivate = ({ reply }) => {
 /**
  * @param { import('telegraf/typings/context').TelegrafContext } ctx.reply
  */
-const handleGroup = ({ reply }) => {
-  reply('Message me directly for more options');
+const handleGroup = async ({ reply }) => {
+  await reply('Message me directly for more options');
 };
 
 /**

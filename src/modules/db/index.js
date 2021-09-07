@@ -23,6 +23,8 @@ const Optin = mongoose.model('Optin', optinSchema);
  * Persist a user.
  *
  * @param { import('telegraf/typings/telegram-types').User } telegramUser The Telegram user object to persist
+ *
+ * @returns { Promise<void> }
  */
 export const addUser = async (telegramUser) => {
   try {
@@ -41,7 +43,7 @@ export const addUser = async (telegramUser) => {
  *
  * @param { import('telegraf/typings/telegram-types').User } telegramUser The Telegram user to find
  *
- * @returns { object } The stored User
+ * @returns { Promise<object> } The stored User
  */
 export const findUser = async (telegramUser) => {
   try {
@@ -57,7 +59,7 @@ export const findUser = async (telegramUser) => {
  *
  * @param { import('telegraf/typings/telegram-types').User } telegramUser
  *
- * @returns { Array } An array of stored Chats
+ * @returns { Promise<Array> } An array of stored Chats
  */
 export const findChatsForUser = async (telegramUser) => {
   try {
@@ -74,7 +76,7 @@ export const findChatsForUser = async (telegramUser) => {
  *
  * @param { Number } chatId
  *
- * @returns { Object } The Chat document
+ * @returns { Promise<Object> } The Chat document
  */
 export const findChatOptins = async (chatId) => {
   try {
@@ -91,6 +93,8 @@ export const findChatOptins = async (chatId) => {
  *
  * @param { import('telegraf/typings/telegram-types').Chat } chat The Telegram chat object to add
  * @param { import('telegraf/typings/telegram-types').User } user The Telegram user object to link the chat to
+ *
+ * @returns { Promise<void> }
  */
 export const addChat = async (telegramChat, telegramUser) => {
   try {
@@ -108,6 +112,14 @@ export const addChat = async (telegramChat, telegramUser) => {
   }
 };
 
+/**
+ * Record user opt-in
+ *
+ * @param { import('telegraf/typings/telegram-types').Chat } chat The Telegram chat object the button was clicked in
+ * @param { import('telegraf/typings/telegram-types').User } user The Telegram user object who clicked the buttoto link the chat ton
+ *
+ * @returns { Promise<void> }
+ */
 export const addUserOptIn = async (telegramChat, telegramUser) => {
   try {
     const newChat = await Optin.findOneAndUpdate(

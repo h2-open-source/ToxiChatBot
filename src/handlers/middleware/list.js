@@ -14,7 +14,7 @@ import { isPrivateChat } from '../../utils/telegramUtils';
  */
 export const listHandler = async (ctx, next) => {
   if (!isPrivateChat(ctx)) {
-    ctx.reply('Try this command in a private chat with me.');
+    await ctx.reply('Try this command in a private chat with me.');
     return next();
   }
 
@@ -22,16 +22,18 @@ export const listHandler = async (ctx, next) => {
   const chats = await findChatsForUser(ctx.from);
 
   if (chats.length < 1) {
-    ctx.reply(
+    await ctx.reply(
       'You have no groups set up yet. Try calling /start in your group.'
     );
     return next();
   }
 
-  const getChats = chats.map((c) => ctx.telegram.getChat(c.id));
+  const getChats = await Promise.all(
+    chats.map((c) => ctx.telegram.getChat(c.id))
+  );
   const chatsDetails = await Promise.all(getChats);
 
-  ctx.reply(
+  await ctx.reply(
     'Choose a group below to see a list of users that clicked the button in that group.',
     Extra.HTML().markup((m) =>
       m.inlineKeyboard(

@@ -14,7 +14,7 @@ export const addedToGroup = async (ctx, next) => {
   );
 
   if (botWasAdded) {
-    ctx.reply(`Hi there, I'm ${process.env.BOT_NAME}`);
+    await ctx.reply(`Hi there, I'm ${process.env.BOT_NAME}`);
   }
 
   return next();
