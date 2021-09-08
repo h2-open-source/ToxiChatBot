@@ -48,6 +48,5 @@ const handleGroupStart = async (ctx) => {
 };
 
 export const start = async (ctx) =>
-  // Record user only if in DM.
   isPrivateChat(ctx) ? handlePrivateStart(ctx) : handleGroupStart(ctx);
 // Now user can send a command to see all their groups, see list of opted-in users for each, and generate button for that group
