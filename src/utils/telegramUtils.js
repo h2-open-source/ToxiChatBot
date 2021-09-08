@@ -16,7 +16,7 @@ export const isPrivateChat = (ctx) => ctx.chat.type === 'private';
 export const isUserAdmin = async (ctx, chatId, userId) => {
   try {
     const admins = await ctx.getChatAdministrators(chatId);
-    return admins.some((admin) => admin.user.id === userId);
+    return admins.some((admin) => admin.user?.id === userId);
   } catch (err) {
     if (err.code === 400) return true;
   }

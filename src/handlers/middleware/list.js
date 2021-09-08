@@ -16,7 +16,6 @@ export const listHandler = async (ctx) => {
     return ctx.reply('Try this command in a private chat with me.');
   }
 
-  // Get Chats for user
   const chats = await findChatsForUser(ctx.from);
 
   if (chats.length < 1) {
