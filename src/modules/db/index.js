@@ -125,7 +125,7 @@ export const addUserOptIn = async (telegramChat, telegramUser) => {
     const newChat = await Optin.findOneAndUpdate(
       { chatId: telegramChat.id },
       {
-        $push: { users: telegramUser.id },
+        $addToSet: { users: telegramUser.id },
         $setOnInsert: { id: telegramChat.id },
       },
       { upsert: true, new: true }
