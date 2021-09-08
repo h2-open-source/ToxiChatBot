@@ -1,5 +1,5 @@
-import { findUser, addUser, addChat } from '../../modules/db/index';
-import { isPrivateChat, isUserAdmin } from '../../utils/telegramUtils';
+import { findUser, addUser, addChat } from 'modules/db/index';
+import { isPrivateChat, isUserAdmin } from 'utils/telegramUtils';
 
 /**
  *  Persist the user and let them know how to proceed.
@@ -34,6 +34,8 @@ const handleGroupStart = async (ctx) => {
   if (user) {
     await addChat(ctx.chat, ctx.from);
 
+    await ctx.reply('Nice! Take a look at your chat with me to get started.');
+
     return ctx.telegram.sendMessage(
       ctx.from.id,
       'Success! Now you can manage your settings for this group.'
@@ -46,6 +48,5 @@ const handleGroupStart = async (ctx) => {
 };
 
 export const start = async (ctx) =>
-  // Record user only if in DM.
   isPrivateChat(ctx) ? handlePrivateStart(ctx) : handleGroupStart(ctx);
 // Now user can send a command to see all their groups, see list of opted-in users for each, and generate button for that group
