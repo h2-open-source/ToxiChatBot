@@ -34,6 +34,8 @@ const handleGroupStart = async (ctx) => {
   if (user) {
     await addChat(ctx.chat, ctx.from);
 
+    await ctx.reply('Nice! Take a look at your chat with me to get started.');
+
     return ctx.telegram.sendMessage(
       ctx.from.id,
       'Success! Now you can manage your settings for this group.'
