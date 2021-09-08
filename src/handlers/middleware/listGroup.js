@@ -18,7 +18,7 @@ export const listGroup = async (ctx) => {
   const groupId = ctx.match[1];
   const chat = await findChatOptins(groupId);
 
-  if (!chat || !chat.users) {
+  if (!chat?.users) {
     return ctx.reply('No users have clicked the button in that group yet 😢');
   }
 

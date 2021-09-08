@@ -8,7 +8,7 @@ export const addedToGroup = async (ctx) => {
 
   const { username } = await ctx.telegram.getMe();
 
-  const botWasAdded = message.new_chat_members.some(
+  const botWasAdded = message.new_chat_members?.some(
     (user) => user.username === username
   );
 
