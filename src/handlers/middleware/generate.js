@@ -1,4 +1,4 @@
-import { Extra } from 'telegraf';
+import { Markup } from 'telegraf';
 import { isPrivateChat, isUserAdmin } from 'utils/telegramUtils';
 
 /**
@@ -28,8 +28,6 @@ export const generate = async (ctx) => {
 
   return ctx.reply(
     'Do you want to stay in this group? Click this button.',
-    Extra.HTML().markup((m) =>
-      m.inlineKeyboard([m.callbackButton('I want to stay!', 'optin')])
-    )
+    Markup.inlineKeyboard([Markup.button.callback('I want to stay!', 'optin')])
   );
 };

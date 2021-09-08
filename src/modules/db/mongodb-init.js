@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 import * as log from 'utils/log';
 
-mongoose.set('useFindAndModify', false);
-mongoose.set('useNewUrlParser', true);
-mongoose.set('useUnifiedTopology', true);
-mongoose.set('useCreateIndex', true);
+// mongoose.set('useFindAndModify', false);
+// mongoose.set('useNewUrlParser', true);
+// mongoose.set('useUnifiedTopology', true);
+// mongoose.set('useCreateIndex', true);
 
 const prepareConnectionString = (config) => {
   let connectionString = 'mongodb://';

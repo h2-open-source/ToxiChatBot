@@ -1,4 +1,4 @@
-import { Extra } from 'telegraf';
+import { Markup } from 'telegraf';
 import { findChatsForUser } from 'modules/db';
 import { isPrivateChat } from 'utils/telegramUtils';
 
@@ -30,9 +30,9 @@ export const listHandler = async (ctx) => {
 
   return ctx.reply(
     'Choose a group below to see a list of users that clicked the button in that group.',
-    Extra.HTML().markup((m) =>
-      m.inlineKeyboard(
-        chatsDetails.map((c) => m.callbackButton(`${c.title}`, `list-${c.id}`))
+    Markup.inlineKeyboard(
+      chatsDetails.map((c) =>
+        Markup.button.callback(`${c.title}`, `list-${c.id}`)
       )
     )
   );
