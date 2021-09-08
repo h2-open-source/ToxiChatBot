@@ -1,5 +1,5 @@
-import { findUser, addUser, addChat } from '../../modules/db/index';
-import { isPrivateChat, isUserAdmin } from '../../utils/telegramUtils';
+import { findUser, addUser, addChat } from 'modules/db/index';
+import { isPrivateChat, isUserAdmin } from 'utils/telegramUtils';
 
 /**
  *  Persist the user and let them know how to proceed.
