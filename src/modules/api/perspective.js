@@ -27,6 +27,7 @@ export const toxicityProbability = async (text) => {
     requestedAttributes: {
       TOXICITY: {},
     },
+    doNotStore: true,
   };
 
   try {
