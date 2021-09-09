@@ -1,7 +1,8 @@
 import { toxicityProbability } from 'modules/api/perspective';
 
 /**
- * Send an introduction when the bot is added to a group.
+ * Analyze the replied-to message with Perspective and reply with the
+ * probability of it being toxic.
  *
  * @param { import('telegraf/typings/context').TelegrafContext } ctx
  */
