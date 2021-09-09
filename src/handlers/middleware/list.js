@@ -20,20 +20,20 @@ export const listHandler = async (ctx) => {
 
   if (chats.length < 1) {
     return ctx.reply(
-      'You have no groups set up yet. Try calling /start in your group.'
+      'You have no groups set up yet. Try calling /start in your group.',
     );
   }
 
   const chatsDetails = await Promise.all(
-    chats.map((c) => ctx.telegram.getChat(c.id))
+    chats.map((c) => ctx.telegram.getChat(c.id)),
   );
 
   return ctx.reply(
     'Choose a group below to see a list of users that clicked the button in that group.',
     Markup.inlineKeyboard(
       chatsDetails.map((c) =>
-        Markup.button.callback(`${c.title}`, `list-${c.id}`)
-      )
-    )
+        Markup.button.callback(`${c.title}`, `list-${c.id}`),
+      ),
+    ),
   );
 };

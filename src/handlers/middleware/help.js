@@ -8,7 +8,7 @@ const handlePrivate = async (ctx) => {
   // TODO: Add better help text
   return ctx.reply(
     '/generate - Create the opt-in button\n' +
-      "/list - Show a list of all the groups your buttons were forwarded to and see who's clicked them"
+      "/list - Show a list of all the groups your buttons were forwarded to and see who's clicked them",
   );
 };
 

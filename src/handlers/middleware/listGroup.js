@@ -24,7 +24,7 @@ export const listGroup = async (ctx) => {
 
   // TODO: Show the 'typing' chat action
   const users = await Promise.all(
-    chat.users.map((u) => ctx.telegram.getChat(u))
+    chat.users.map((u) => ctx.telegram.getChat(u)),
   );
 
   const userList = users
