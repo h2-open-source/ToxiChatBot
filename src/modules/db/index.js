@@ -31,7 +31,7 @@ export const addUser = async (telegramUser) => {
     await User.findOneAndUpdate(
       { id: telegramUser.id },
       { $setOnInsert: { id: telegramUser.id } },
-      { upsert: true, new: true }
+      { upsert: true, new: true },
     );
   } catch (err) {
     logError(err);
@@ -103,7 +103,7 @@ export const addChat = async (telegramChat, telegramUser) => {
     const newChat = await Chat.findOneAndUpdate(
       { id: telegramChat.id },
       { $setOnInsert: { id: telegramChat.id, users: [user._id] } },
-      { upsert: true, new: true }
+      { upsert: true, new: true },
     );
 
     if (newChat === null) throw Error('Failed to create telegramChat');
@@ -128,7 +128,7 @@ export const addUserOptIn = async (telegramChat, telegramUser) => {
         $addToSet: { users: telegramUser.id },
         $setOnInsert: { id: telegramChat.id },
       },
-      { upsert: true, new: true }
+      { upsert: true, new: true },
     );
 
     if (newChat === null) throw Error('Failed to create optin chat');

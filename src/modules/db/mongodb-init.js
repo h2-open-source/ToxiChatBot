@@ -35,7 +35,7 @@ export const init = () => {
     })
     .catch((error) => {
       log.logError(
-        `Error occurred while connecting to DB ${connectionString}: ${error}`
+        `Error occurred while connecting to DB ${connectionString}: ${error}`,
       );
     });
 };

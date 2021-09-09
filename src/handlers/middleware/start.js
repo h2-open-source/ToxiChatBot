@@ -10,11 +10,11 @@ const handlePrivateStart = async (ctx) => {
   await addUser(ctx.from);
 
   await ctx.reply(
-    'Hello! Add me to the group you want to manage and run the /start command there to get this show on the road.'
+    'Hello! Add me to the group you want to manage and run the /start command there to get this show on the road.',
   );
 
   return ctx.reply(
-    "If you're not sure what to do next, use the /help command."
+    "If you're not sure what to do next, use the /help command.",
   );
 };
 
@@ -38,12 +38,12 @@ const handleGroupStart = async (ctx) => {
 
     return ctx.telegram.sendMessage(
       ctx.from.id,
-      'Success! Now you can manage your settings for this group.'
+      'Success! Now you can manage your settings for this group.',
     );
   }
 
   return ctx.reply(
-    "Hol' up. Please send the /start command in a private message with me first."
+    "Hol' up. Please send the /start command in a private message with me first.",
   );
 };
 

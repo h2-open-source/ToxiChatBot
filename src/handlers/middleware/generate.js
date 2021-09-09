@@ -22,12 +22,12 @@ export const generate = async (ctx) => {
     //   'Forward the following message to your group, or re-run this command in the group.'
     // );
     return ctx.reply(
-      'Run this command in a group to generate a button for its users to click.'
+      'Run this command in a group to generate a button for its users to click.',
     );
   }
 
   return ctx.reply(
     'Do you want to stay in this group? Click this button.',
-    Markup.inlineKeyboard([Markup.button.callback('I want to stay!', 'optin')])
+    Markup.inlineKeyboard([Markup.button.callback('I want to stay!', 'optin')]),
   );
 };

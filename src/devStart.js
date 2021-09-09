@@ -17,6 +17,6 @@ ngrok
       })
       .on('quit', async () => {
         await ngrok.kill();
-      })
+      }),
   )
   .catch(async () => ngrok.kill());
