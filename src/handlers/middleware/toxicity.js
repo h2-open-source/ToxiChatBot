@@ -11,7 +11,10 @@ export const toxicity = async (ctx) => {
   if (!message.reply_to_message)
     return ctx.reply(`You'll need to use that command in a reply.`);
 
-  const result = await toxicityProbability(message.reply_to_message.text);
+  const result = await toxicityProbability(
+    message.reply_to_message.text,
+    message.chat.id,
+  );
 
   if (result.error)
     return ctx.reply(

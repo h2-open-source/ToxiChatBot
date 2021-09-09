@@ -14,9 +14,10 @@ const summaryScore = (response) =>
 
 /**
  * @param { string } text The text string to analyze with the Perspective API
+ * @param { any? } communityId A chat id to taylor analysis to a specific group
  * @returns { Promise<{score:string?, error:string?}> } An object with the score in percent
  */
-export const toxicityProbability = async (text) => {
+export const toxicityProbability = async (text, communityId) => {
   const client = await google.discoverAPI(DISCOVERY_URL);
   const analyze = promisify(client.comments.analyze);
 
@@ -28,6 +29,7 @@ export const toxicityProbability = async (text) => {
       TOXICITY: {},
     },
     doNotStore: true,
+    communityId: `${communityId}`,
   };
 
   try {
