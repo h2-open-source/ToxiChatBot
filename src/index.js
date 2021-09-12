@@ -1,6 +1,5 @@
-// eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 import localenv from 'localenv';
-import crypto from 'crypto';
 import express from 'express';
 import { middleware } from 'handlers/middleware';
 import { help } from 'handlers/middleware/help';
