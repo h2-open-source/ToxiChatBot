@@ -8,9 +8,9 @@ ngrok
   .connect({ port })
   .then((url) =>
     nodemon({
-      script: `./src/index.js`,
+      script: `./src/index.ts`,
       args: [url],
-      ext: 'js',
+      ext: 'ts',
     })
       .on('start', async () => {
         logMessage(`Server now available at ${url}`);

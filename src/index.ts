@@ -1,5 +1,9 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+// eslint-disable @typescript-eslint/no-unused-vars, no-unused-vars
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import localenv from 'localenv';
+// eslint-enable @typescript-eslint/no-unused-vars, no-unused-vars
+import crypto from 'crypto';
 import express from 'express';
 import { middleware } from 'handlers/middleware';
 import { help } from 'handlers/middleware/help';
@@ -21,7 +25,7 @@ bot.use(middleware);
 
 const hash = crypto
   .createHash('sha256')
-  .update(process.env.BOT_TOKEN)
+  .update(process.env.BOT_TOKEN || '')
   .digest('base64');
 bot.telegram.setWebhook(`${url}/${hash}`);
 
@@ -34,7 +38,7 @@ app.listen(3000, () => {
   logMessage('Bot listening on port 3000!');
 });
 
-bot.catch(logError);
+bot.catch((err) => logError(err as Error));
 
 process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
