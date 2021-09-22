@@ -1,6 +1,6 @@
 import ngrok from 'ngrok';
 import nodemon from 'nodemon';
-import { logMessage } from 'utils/log';
+import { logMessage } from './utils/log';
 
 const port = process.env.PORT || 3000;
 
