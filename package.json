@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "A Telegram group management bot",
   "main": "index",
+  "type": "module",
   "module": "commonjs",
   "dependencies": {
     "@types/node": "^16.9.4",
@@ -40,6 +41,7 @@
   },
   "scripts": {
     "start": "tsc-watch -w -p . --onSuccess \"node dist/devStart.js\"",
+    "compile": "tsc-watch -w -p .",
     "start2": "babel-node ./src/devStart.js",
     "start1": "nodemon --exec babel-node ./src/index.js",
     "test": "./node_modules/.bin/mocha --recursive --require @babel/register",
