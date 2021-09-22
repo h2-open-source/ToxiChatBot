@@ -1,6 +1,11 @@
-import { findChatOptins } from 'modules/db';
+import { Context, Middleware, NarrowedContext } from 'telegraf';
+import { ChatFromGetChat, Update, User } from 'typegram';
+import { findChatOptins } from '../../modules/db';
 
-const formatName = (user) => {
+const formatName = (user: ChatFromGetChat) => {
+  if (!('first_name' in user && 'last_name' in user && 'username' in user))
+    return '';
+
   const name =
     user.first_name && user.last_name
       ? `${user.first_name} ${user.last_name}`
@@ -12,10 +17,14 @@ const formatName = (user) => {
 /**
  * Replies with list of users that have clicked the opt-in button in the specified group.
  *
- * @param { import('telegraf/typings/context').TelegrafContext } ctx
+ * @param ctx
  */
-export const listGroup = async (ctx) => {
-  const groupId = ctx.match[1];
+export const listGroup = async (
+  ctx: Context & {
+    match: RegExpExecArray;
+  },
+) => {
+  const groupId = Number(ctx.match[1]);
   const chat = await findChatOptins(groupId);
 
   if (!chat?.users) {

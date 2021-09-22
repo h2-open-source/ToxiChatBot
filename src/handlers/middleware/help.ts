@@ -1,4 +1,4 @@
-import { isPrivateChat } from 'utils/telegramUtils';
+import { isPrivateChat } from '../../utils/telegramUtils';
 import { Context } from 'telegraf';
 import { Message } from 'typegram';
 

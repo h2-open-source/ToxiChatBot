@@ -1,16 +1,19 @@
-import { toxicityProbability } from 'modules/api/perspective';
+import { Context, deunionize } from 'telegraf';
+import { toxicityProbability } from '../../modules/api/perspective';
 
 /**
  * Analyze the replied-to message with Perspective and reply with the
  * probability of it being toxic.
  *
- * @param { import('telegraf/typings/context').TelegrafContext } ctx
+ * @param ctx
  */
-export const toxicity = async (ctx) => {
-  const { message } = ctx;
+export const toxicity = async (ctx: Context) => {
+  const message = deunionize(ctx.message);
 
-  if (!message.reply_to_message)
-    return ctx.reply(`You'll need to use that command in a reply.`);
+  if (!('reply_to_message' in message && 'text' in message.reply_to_message))
+    return ctx.reply(
+      `You'll need to use that command in a reply to a message with text.`,
+    );
 
   const result = await toxicityProbability(
     message.reply_to_message.text,

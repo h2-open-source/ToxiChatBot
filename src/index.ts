@@ -5,12 +5,13 @@ import localenv from 'localenv';
 // eslint-enable @typescript-eslint/no-unused-vars, no-unused-vars
 import crypto from 'crypto';
 import express from 'express';
-import { middleware } from 'handlers/middleware';
-import { help } from 'handlers/middleware/help';
-import { start } from 'handlers/middleware/start';
-import { bot } from 'modules/bot';
-import { init } from 'modules/db/mongodb-init';
-import { logMessage, logError } from 'utils/log';
+import { middleware } from './handlers/middleware';
+import { help } from './handlers/middleware/help';
+import { start } from './handlers/middleware/start';
+import { addedToGroup } from './handlers/middleware/addedToGroup';
+import { bot } from './modules/bot';
+import { init } from './modules/db/mongodb-init';
+import { logMessage, logError } from './utils/log';
 
 // If not in the production environment, try to use the URL argument.
 // If in production, or if the URL argument is absent, use the environment variable.

@@ -1,32 +1,42 @@
-import mongoose from 'mongoose';
-import { logError } from 'utils/log';
+import mongoose, { Model, ObjectId } from 'mongoose';
+import { Chat, User } from 'typegram';
+import { logError } from '../../utils/log';
 
 // TODO: move schemas (and models?) to their own files
 const chatSchema = new mongoose.Schema({
   id: { type: Number, required: true, unique: true },
   users: [mongoose.Types.ObjectId],
 });
+interface IChat extends Document {
+  id: number;
+  users: ObjectId[];
+}
 const Chat = mongoose.model('Chat', chatSchema);
 
 const userSchema = new mongoose.Schema({
   id: { type: Number, required: true, unique: true },
 });
-const User = mongoose.model('User', userSchema);
+interface IUser extends Document {
+  id: number;
+}
+const User: Model<IUser> = mongoose.model('User', userSchema);
 
 const optinSchema = new mongoose.Schema({
   chatId: { type: Number, required: true, unique: true },
   users: [Number],
 });
-const Optin = mongoose.model('Optin', optinSchema);
+interface IOptin extends Document {
+  chatId: number;
+  users: number[];
+}
+const Optin: Model<IOptin> = mongoose.model('Optin', optinSchema);
 
 /**
  * Persist a user.
  *
- * @param { import('telegraf/typings/telegram-types').User } telegramUser The Telegram user object to persist
- *
- * @returns { Promise<void> }
+ * @param telegramUser The Telegram user object to persist
  */
-export const addUser = async (telegramUser) => {
+export const addUser = async (telegramUser: User) => {
   try {
     await User.findOneAndUpdate(
       { id: telegramUser.id },
@@ -41,11 +51,11 @@ export const addUser = async (telegramUser) => {
 /**
  * Find a user stored in persistence.
  *
- * @param { import('telegraf/typings/telegram-types').User } telegramUser The Telegram user to find
+ * @param telegramUser The Telegram user to find
  *
- * @returns { Promise<object> } The stored User
+ * @returns The stored User
  */
-export const findUser = async (telegramUser) => {
+export const findUser = async (telegramUser: User) => {
   try {
     return await User.findOne({ id: telegramUser.id });
   } catch (err) {
@@ -57,11 +67,11 @@ export const findUser = async (telegramUser) => {
 /**
  * Retrieve a list of all stored Chats in which the telegramUser has initialized the bot
  *
- * @param { import('telegraf/typings/telegram-types').User } telegramUser
+ * @param telegramUser
  *
- * @returns { Promise<Array> } An array of stored Chats
+ * @returns An array of stored Chats
  */
-export const findChatsForUser = async (telegramUser) => {
+export const findChatsForUser = async (telegramUser: User) => {
   try {
     const user = await findUser(telegramUser);
     return await Chat.find({ users: user._id });
@@ -72,13 +82,13 @@ export const findChatsForUser = async (telegramUser) => {
 };
 
 /**
- * Retrieve a stored chat by its Telegram ID
+ * Retrieve a stored OptIn record by its Telegram Chat ID
  *
- * @param { Number } chatId
+ * @param chatId
  *
- * @returns { Promise<Object> } The Chat document
+ * @returns The Optin document
  */
-export const findChatOptins = async (chatId) => {
+export const findChatOptins = async (chatId: number) => {
   try {
     return await Optin.findOne({ chatId });
   } catch (err) {
@@ -91,12 +101,12 @@ export const findChatOptins = async (chatId) => {
 /**
  * Persist chat and add the user to it.
  *
- * @param { import('telegraf/typings/telegram-types').Chat } chat The Telegram chat object to add
- * @param { import('telegraf/typings/telegram-types').User } user The Telegram user object to link the chat to
+ * @param chat The Telegram chat object to add
+ * @param user The Telegram user object to link the chat to
  *
- * @returns { Promise<void> }
+ * @returns
  */
-export const addChat = async (telegramChat, telegramUser) => {
+export const addChat = async (telegramChat: Chat, telegramUser: User) => {
   try {
     const user = await findUser(telegramUser);
 
@@ -115,12 +125,12 @@ export const addChat = async (telegramChat, telegramUser) => {
 /**
  * Record user opt-in
  *
- * @param { import('telegraf/typings/telegram-types').Chat } chat The Telegram chat object the button was clicked in
- * @param { import('telegraf/typings/telegram-types').User } user The Telegram user object who clicked the buttoto link the chat ton
+ * @param chat The Telegram chat object the button was clicked in
+ * @param user The Telegram user object who clicked the buttoto link the chat ton
  *
- * @returns { Promise<void> }
+ * @returns
  */
-export const addUserOptIn = async (telegramChat, telegramUser) => {
+export const addUserOptIn = async (telegramChat: Chat, telegramUser: User) => {
   try {
     const newChat = await Optin.findOneAndUpdate(
       { chatId: telegramChat.id },
