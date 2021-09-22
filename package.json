@@ -6,6 +6,7 @@
   "module": "commonjs",
   "dependencies": {
     "@types/node": "^16.9.4",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "googleapis": "^85.0.0",
     "localenv": "^0.2.2",
