@@ -17,18 +17,11 @@
     "typegram": "^3.4.3"
   },
   "devDependencies": {
-    "@babel/cli": "^7.15.4",
-    "@babel/core": "^7.15.5",
-    "@babel/eslint-parser": "^7.15.4",
-    "@babel/node": "^7.15.4",
-    "@babel/preset-env": "^7.15.4",
-    "@babel/register": "^7.15.3",
     "@types/express": "^4.17.13",
     "@types/mongoose": "^5.11.97",
     "@types/nodemon": "^1.19.1",
     "@typescript-eslint/eslint-plugin": "^4.31.0",
     "@typescript-eslint/parser": "^4.31.0",
-    "babel-plugin-module-resolver": "^4.1.0",
     "chai": "^4.3.4",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
@@ -43,9 +36,7 @@
   },
   "scripts": {
     "start": "ts-node src/devStart.ts",
-    "test": "./node_modules/.bin/mocha --recursive --require @babel/register",
     "lint": "yarn run eslint src",
-    "build": "babel src --out-dir ./dist --source-maps",
     "serve": "node ./dist/index.js"
   },
   "repository": {
