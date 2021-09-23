@@ -1,4 +1,5 @@
 import { Context, deunionize } from 'telegraf';
+import { Message } from 'typegram';
 import { toxicityProbability } from '../../modules/api/perspective';
 
 /**
@@ -7,7 +8,7 @@ import { toxicityProbability } from '../../modules/api/perspective';
  *
  * @param ctx
  */
-export const toxicity = async (ctx: Context) => {
+export const toxicity = async (ctx: Context): Promise<Message.TextMessage> => {
   const message = deunionize(ctx.message);
 
   if (!('reply_to_message' in message && 'text' in message.reply_to_message))

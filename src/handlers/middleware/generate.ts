@@ -1,4 +1,5 @@
 import { Context, Markup } from 'telegraf';
+import { Message } from 'typegram';
 import { isPrivateChat, isUserAdmin } from '../../utils/telegramUtils';
 
 /**
@@ -10,7 +11,7 @@ import { isPrivateChat, isUserAdmin } from '../../utils/telegramUtils';
  *
  * @param ctx
  */
-export const generate = async (ctx: Context) => {
+export const generate = async (ctx: Context): Promise<Message.TextMessage> => {
   if (!(await isUserAdmin(ctx, ctx.from.id))) {
     return ctx.reply('Only admins can use this bot.');
   }

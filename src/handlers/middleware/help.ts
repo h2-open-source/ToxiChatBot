@@ -1,6 +1,6 @@
-import { isPrivateChat } from '../../utils/telegramUtils';
 import { Context } from 'telegraf';
 import { Message } from 'typegram';
+import { isPrivateChat } from '../../utils/telegramUtils';
 
 const handlePrivate = async (ctx: Context) => {
   await ctx.reply("Here's what I can do: ");

@@ -1,8 +1,9 @@
 import { Context } from 'telegraf';
-import { Chat, ChatFromGetChat } from 'typegram';
+import { Chat, ChatFromGetChat, Message } from 'typegram';
 import { findChatOptins } from '../../modules/db';
 
-const isUser = (chat: any): chat is Chat.PrivateChat => 'first_name' in chat;
+const isUser = (chat: unknown): chat is Chat.PrivateChat =>
+  'first_name' in (chat as Chat.PrivateChat);
 
 const hasFullName = (user: Chat.PrivateChat) =>
   'first_name' in user && 'last_name' in user;
@@ -26,7 +27,7 @@ export const listGroup = async (
   ctx: Context & {
     match: RegExpExecArray;
   },
-) => {
+): Promise<Message.TextMessage> => {
   const groupId = Number(ctx.match[1]);
   const chat = await findChatOptins(groupId);
 

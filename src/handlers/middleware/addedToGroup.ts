@@ -6,7 +6,9 @@ import { Message } from 'typegram';
  *
  * @param ctx
  */
-export const addedToGroup = async (ctx: Context) => {
+export const addedToGroup = async (
+  ctx: Context,
+): Promise<Message.TextMessage | null> => {
   const { message } = ctx;
   const { username } = await ctx.telegram.getMe();
 

@@ -23,8 +23,8 @@
     "import/no-default-export": ["warn"],
     "import/no-absolute-path": 0,
     "import/no-unresolved": 0,
+    "import/order": "warn",
     "comma-dangle": ["error", "always-multiline"],
-    "no-unused-vars": "warn",
     "indent": ["error", 2],
     "no-underscore-dangle": ["error", { "allow": ["_id"] }]
   }

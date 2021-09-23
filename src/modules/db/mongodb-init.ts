@@ -6,7 +6,12 @@ import * as log from '../../utils/log';
 // mongoose.set('useUnifiedTopology', true);
 // mongoose.set('useCreateIndex', true);
 
-const prepareConnectionString = (config: any) => {
+const prepareConnectionString = (config: {
+  user: string;
+  password: string;
+  server: string;
+  database: string;
+}) => {
   let connectionString = 'mongodb://';
 
   if (config.user) {
@@ -18,7 +23,7 @@ const prepareConnectionString = (config: any) => {
   return connectionString;
 };
 
-export const init = () => {
+export const init = (): void => {
   const options = {};
   const mongodb = {
     user: process.env.MONGO_USER,

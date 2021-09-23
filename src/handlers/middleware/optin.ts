@@ -6,7 +6,7 @@ import { addUserOptIn } from '../../modules/db';
  *
  * @param ctx
  */
-export const optin = async (ctx: Context) => {
+export const optin = async (ctx: Context): Promise<true> => {
   const { chat } = ctx;
   const { from } = ctx.callbackQuery;
 

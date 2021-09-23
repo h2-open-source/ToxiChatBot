@@ -1,4 +1,5 @@
 import { Context } from 'telegraf';
+import { Message } from 'typegram';
 import { findUser, addUser, addChat } from '../../modules/db/index';
 import { isPrivateChat, isUserAdmin } from '../../utils/telegramUtils';
 
@@ -48,6 +49,6 @@ const handleGroupStart = async (ctx: Context) => {
   );
 };
 
-export const start = async (ctx: Context) =>
+export const start = async (ctx: Context): Promise<Message.TextMessage> =>
   isPrivateChat(ctx) ? handlePrivateStart(ctx) : handleGroupStart(ctx);
 // Now user can send a command to see all their groups, see list of opted-in users for each, and generate button for that group

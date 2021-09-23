@@ -11,7 +11,7 @@ interface IChat extends Document {
   id: number;
   users: ObjectId[];
 }
-const Chat = mongoose.model('Chat', chatSchema);
+const Chat: Model<IChat> = mongoose.model('Chat', chatSchema);
 
 const userSchema = new mongoose.Schema({
   id: { type: Number, required: true, unique: true },
@@ -36,7 +36,7 @@ const Optin: Model<IOptin> = mongoose.model('Optin', optinSchema);
  *
  * @param telegramUser The Telegram user object to persist
  */
-export const addUser = async (telegramUser: User) => {
+export const addUser = async (telegramUser: User): Promise<void> => {
   try {
     await User.findOneAndUpdate(
       { id: telegramUser.id },
@@ -44,6 +44,7 @@ export const addUser = async (telegramUser: User) => {
       { upsert: true, new: true },
     );
   } catch (err) {
+    // TODO: This (and others like it) should return something like an error object, so the caller knowr what happened.
     logError(err);
   }
 };
@@ -55,7 +56,9 @@ export const addUser = async (telegramUser: User) => {
  *
  * @returns The stored User
  */
-export const findUser = async (telegramUser: User) => {
+export const findUser = async (
+  telegramUser: User,
+): Promise<mongoose.Document<unknown, unknown, IUser>> => {
   try {
     return await User.findOne({ id: telegramUser.id });
   } catch (err) {
@@ -71,7 +74,9 @@ export const findUser = async (telegramUser: User) => {
  *
  * @returns An array of stored Chats
  */
-export const findChatsForUser = async (telegramUser: User) => {
+export const findChatsForUser = async (
+  telegramUser: User,
+): Promise<mongoose.Document<unknown, unknown, IChat>[]> => {
   try {
     const user = await findUser(telegramUser);
     return await Chat.find({ users: user._id });
@@ -88,7 +93,9 @@ export const findChatsForUser = async (telegramUser: User) => {
  *
  * @returns The Optin document
  */
-export const findChatOptins = async (chatId: number) => {
+export const findChatOptins = async (
+  chatId: number,
+): Promise<mongoose.Document<unknown, unknown, IOptin>> => {
   try {
     return await Optin.findOne({ chatId });
   } catch (err) {
@@ -106,7 +113,10 @@ export const findChatOptins = async (chatId: number) => {
  *
  * @returns
  */
-export const addChat = async (telegramChat: Chat, telegramUser: User) => {
+export const addChat = async (
+  telegramChat: Chat,
+  telegramUser: User,
+): Promise<void> => {
   try {
     const user = await findUser(telegramUser);
 
@@ -130,7 +140,10 @@ export const addChat = async (telegramChat: Chat, telegramUser: User) => {
  *
  * @returns
  */
-export const addUserOptIn = async (telegramChat: Chat, telegramUser: User) => {
+export const addUserOptIn = async (
+  telegramChat: Chat,
+  telegramUser: User,
+): Promise<void> => {
   try {
     const newChat = await Optin.findOneAndUpdate(
       { chatId: telegramChat.id },
