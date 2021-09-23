@@ -1,15 +1,18 @@
-import { Context, Middleware, NarrowedContext } from 'telegraf';
-import { ChatFromGetChat, Update, User } from 'typegram';
+import { Context } from 'telegraf';
+import { Chat, ChatFromGetChat } from 'typegram';
 import { findChatOptins } from '../../modules/db';
 
-const formatName = (user: ChatFromGetChat) => {
-  if (!('first_name' in user && 'last_name' in user && 'username' in user))
-    return '';
+const isUser = (chat: any): chat is Chat.PrivateChat => 'first_name' in chat;
 
-  const name =
-    user.first_name && user.last_name
-      ? `${user.first_name} ${user.last_name}`
-      : user.first_name || user.last_name;
+const hasFullName = (user: Chat.PrivateChat) =>
+  'first_name' in user && 'last_name' in user;
+
+const formatName = (user: ChatFromGetChat) => {
+  if (!isUser(user)) return '';
+
+  const name = hasFullName(user)
+    ? `${user.first_name} ${user.last_name}`
+    : user.first_name;
 
   return user.username ? `${name} (@${user.username})` : name;
 };
