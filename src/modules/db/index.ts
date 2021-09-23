@@ -8,6 +8,7 @@ const chatSchema = new mongoose.Schema({
   users: [mongoose.Types.ObjectId],
 });
 interface IChat extends Document {
+  _id: ObjectId;
   id: number;
   users: ObjectId[];
 }
@@ -17,6 +18,7 @@ const userSchema = new mongoose.Schema({
   id: { type: Number, required: true, unique: true },
 });
 interface IUser extends Document {
+  _id: ObjectId;
   id: number;
 }
 const User: Model<IUser> = mongoose.model('User', userSchema);
@@ -26,6 +28,7 @@ const optinSchema = new mongoose.Schema({
   users: [Number],
 });
 interface IOptin extends Document {
+  _id: ObjectId;
   chatId: number;
   users: number[];
 }
@@ -56,9 +59,7 @@ export const addUser = async (telegramUser: User): Promise<void> => {
  *
  * @returns The stored User
  */
-export const findUser = async (
-  telegramUser: User,
-): Promise<mongoose.Document<unknown, unknown, IUser>> => {
+export const findUser = async (telegramUser: User): Promise<IUser> => {
   try {
     return await User.findOne({ id: telegramUser.id });
   } catch (err) {
@@ -76,7 +77,7 @@ export const findUser = async (
  */
 export const findChatsForUser = async (
   telegramUser: User,
-): Promise<mongoose.Document<unknown, unknown, IChat>[]> => {
+): Promise<IChat[]> => {
   try {
     const user = await findUser(telegramUser);
     return await Chat.find({ users: user._id });
@@ -93,9 +94,7 @@ export const findChatsForUser = async (
  *
  * @returns The Optin document
  */
-export const findChatOptins = async (
-  chatId: number,
-): Promise<mongoose.Document<unknown, unknown, IOptin>> => {
+export const findChatOptins = async (chatId: number): Promise<IOptin> => {
   try {
     return await Optin.findOne({ chatId });
   } catch (err) {
