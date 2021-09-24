@@ -36,5 +36,19 @@ app.listen(3000, () => {
 
 bot.catch((err) => logError(err as Error));
 
-process.once('SIGINT', () => bot.stop('SIGINT'));
-process.once('SIGTERM', () => bot.stop('SIGTERM'));
+process.once('SIGINT', () => {
+  logMessage('\nStopping...');
+  try {
+    bot.stop('SIGINT');
+  } catch (err) {
+    //
+  }
+});
+process.once('SIGTERM', () => {
+  logMessage('\nStopping...');
+  try {
+    bot.stop('SIGTERM');
+  } catch (err) {
+    //
+  }
+});
