@@ -1,9 +1,8 @@
-import { isPrivateChat } from 'utils/telegramUtils';
+import { Context } from 'telegraf';
+import { Message } from 'typegram';
+import { isPrivateChat } from '../../utils/telegramUtils';
 
-/**
- * @param { import('telegraf/typings/context').TelegrafContext } ctx.reply
- */
-const handlePrivate = async (ctx) => {
+const handlePrivate = async (ctx: Context) => {
   await ctx.reply("Here's what I can do: ");
   // TODO: Add better help text
   return ctx.reply(
@@ -12,16 +11,11 @@ const handlePrivate = async (ctx) => {
   );
 };
 
-/**
- * @param { import('telegraf/typings/context').TelegrafContext } ctx.reply
- */
-const handleGroup = async (ctx) =>
+const handleGroup = async (ctx: Context) =>
   ctx.reply('Message me directly for more options');
 
 /**
  * Send help message
- *
- * @param { import('telegraf/typings/context').TelegrafContext } ctx
  */
-export const help = async (ctx) =>
+export const help = async (ctx: Context): Promise<Message.TextMessage> =>
   isPrivateChat(ctx) ? handlePrivate(ctx) : handleGroup(ctx);

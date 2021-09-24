@@ -24,7 +24,7 @@ yarn
 
 ### Install and start Mongo, or otherwise obtain accesss to a MongoDB instance.
 
-### Set up an environment file called `.env.local` with the appropriate values:
+### Set up an environment file called `.env` with the appropriate values:
 
 ```
 # optional

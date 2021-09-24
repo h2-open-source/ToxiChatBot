@@ -1,6 +1,7 @@
-import { Markup } from 'telegraf';
-import { findChatsForUser } from 'modules/db';
-import { isPrivateChat } from 'utils/telegramUtils';
+import { Context, Markup } from 'telegraf';
+import { Chat, ChatFromGetChat, Message } from 'typegram';
+import { findChatsForUser } from '../../modules/db';
+import { isPrivateChat } from '../../utils/telegramUtils';
 
 /**
  * Responds to user request for a list of groups to which they've sent opt-in buttons.
@@ -9,9 +10,11 @@ import { isPrivateChat } from 'utils/telegramUtils';
  * each of which the use can click to view the list of users who have clicked the opt-in
  * button in that group.
  *
- * @param { import('telegraf/typings/context').TelegrafContext } ctx
+ * @param ctx
  */
-export const listHandler = async (ctx) => {
+export const listHandler = async (
+  ctx: Context,
+): Promise<Message.TextMessage> => {
   if (!isPrivateChat(ctx)) {
     return ctx.reply('Try this command in a private chat with me.');
   }
@@ -28,11 +31,16 @@ export const listHandler = async (ctx) => {
     chats.map((c) => ctx.telegram.getChat(c.id)),
   );
 
+  const hasTitle = (chat: unknown): chat is Chat.TitleChat =>
+    'title' in (chat as Chat.TitleChat);
+  const getTitle = (chat: ChatFromGetChat) =>
+    hasTitle(chat) ? chat.title : chat.username;
+
   return ctx.reply(
     'Choose a group below to see a list of users that clicked the button in that group.',
     Markup.inlineKeyboard(
       chatsDetails.map((c) =>
-        Markup.button.callback(`${c.title}`, `list-${c.id}`),
+        Markup.button.callback(getTitle(c), `list-${c.id}`),
       ),
     ),
   );

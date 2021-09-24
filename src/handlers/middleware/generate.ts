@@ -1,5 +1,6 @@
-import { Markup } from 'telegraf';
-import { isPrivateChat, isUserAdmin } from 'utils/telegramUtils';
+import { Context, Markup } from 'telegraf';
+import { Message } from 'typegram';
+import { isPrivateChat, isUserAdmin } from '../../utils/telegramUtils';
 
 /**
  * Create an "opt-in" message.
@@ -8,10 +9,10 @@ import { isPrivateChat, isUserAdmin } from 'utils/telegramUtils';
  * If sent in a direct message to the bot, the user will be instructed to forward the
  * generated message to the group they want to track.
  *
- * @param { import('telegraf/typings/context').TelegrafContext } ctx
+ * @param ctx
  */
-export const generate = async (ctx) => {
-  if (!(await isUserAdmin(ctx, ctx.chat.id, ctx.from.id))) {
+export const generate = async (ctx: Context): Promise<Message.TextMessage> => {
+  if (!(await isUserAdmin(ctx, ctx.from.id))) {
     return ctx.reply('Only admins can use this bot.');
   }
 

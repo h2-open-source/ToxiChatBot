@@ -1,12 +1,17 @@
 import mongoose from 'mongoose';
-import * as log from 'utils/log';
+import * as log from '../../utils/log';
 
 // mongoose.set('useFindAndModify', false);
 // mongoose.set('useNewUrlParser', true);
 // mongoose.set('useUnifiedTopology', true);
 // mongoose.set('useCreateIndex', true);
 
-const prepareConnectionString = (config) => {
+const prepareConnectionString = (config: {
+  user: string;
+  password: string;
+  server: string;
+  database: string;
+}) => {
   let connectionString = 'mongodb://';
 
   if (config.user) {
@@ -18,7 +23,7 @@ const prepareConnectionString = (config) => {
   return connectionString;
 };
 
-export const init = () => {
+export const init = (): void => {
   const options = {};
   const mongodb = {
     user: process.env.MONGO_USER,
