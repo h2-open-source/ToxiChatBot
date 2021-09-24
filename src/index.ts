@@ -14,6 +14,12 @@ const url =
   (process.env.NODE_ENV !== 'production' && process.argv[2]) ||
   process.env.BOT_URL;
 
+if (!url) {
+  logMessage('Unable to start without configured URL');
+  logMessage('Specify the URL with the BOT_URL environment variable');
+  process.exit();
+}
+
 bot.start(start);
 bot.help(help);
 
