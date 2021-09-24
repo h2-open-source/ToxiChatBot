@@ -14,7 +14,7 @@ ngrok
       ngrok.kill();
     });
 
-    process.on('exit', (code) => {
+    process.on('exit', () => {
       ngrok.kill();
     });
 
