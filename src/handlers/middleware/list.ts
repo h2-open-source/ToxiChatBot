@@ -1,7 +1,8 @@
 import { Context, Markup } from 'telegraf';
-import { Chat, ChatFromGetChat, Message } from 'typegram';
+import { ChatFromGetChat, Message } from 'typegram';
 import { findChatsForUser } from '../../modules/db';
 import { isPrivateChat } from '../../utils/telegramUtils';
+import { hasTitle } from '../../utils/typeGuards';
 
 /**
  * Responds to user request for a list of groups to which they've sent opt-in buttons.
@@ -31,8 +32,6 @@ export const listHandler = async (
     chats.map((c) => ctx.telegram.getChat(c.id)),
   );
 
-  const hasTitle = (chat: unknown): chat is Chat.TitleChat =>
-    'title' in (chat as Chat.TitleChat);
   const getTitle = (chat: ChatFromGetChat) =>
     hasTitle(chat) ? chat.title : chat.username;
 

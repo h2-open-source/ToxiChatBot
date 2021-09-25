@@ -1,9 +1,7 @@
 import { Context } from 'telegraf';
 import { Chat, ChatFromGetChat, Message } from 'typegram';
+import { isUser } from '../../utils/typeGuards';
 import { findChatOptins } from '../../modules/db';
-
-const isUser = (chat: unknown): chat is Chat.PrivateChat =>
-  'first_name' in (chat as Chat.PrivateChat);
 
 const hasFullName = (user: Chat.PrivateChat) =>
   'first_name' in user && 'last_name' in user;
