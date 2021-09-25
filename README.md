@@ -44,7 +44,7 @@ MONGO_PASSWORD=
 PERSPECTIVE_API_TOKEN=
 ```
 
-Enter all the information for your setup. Use @BotFather to create a bot and get your bot token.
+Enter all the information for your setup. Use [@BotFather](https://t.me/botfather) to create a bot and get your bot token.
 
 To get your Perspective API token, follow the [getting started guide](https://developers.perspectiveapi.com/s/docs-get-started), and then follow the "Enable the API" section.
 
