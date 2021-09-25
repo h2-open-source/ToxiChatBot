@@ -55,3 +55,7 @@ yarn start
 ```
 
 This will start a watcher that will compile the code, then run a script that creates an ngrok tunnel and starts up the dev server behind it. When the server starts, it automatically updates the Telegram webhook to point at your ngrok tunnel. If you get the console message "MongoDB connection successful..." you're up and running!
+
+### Configure your editor to use Prettier and ESLint
+
+Do everything they say. If you can, set it up to automatically apply fixes on save. At the very least run the `yarn lint` command and fix the warnings and errors before you push anything up.
