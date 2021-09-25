@@ -1,5 +1,6 @@
-import { Context, deunionize } from 'telegraf';
+import { Context } from 'telegraf';
 import { Message } from 'typegram';
+import { isReply, isTextMessage } from 'utils/typeGuards';
 import { toxicityProbability } from '../../modules/api/perspective';
 
 /**
@@ -9,9 +10,9 @@ import { toxicityProbability } from '../../modules/api/perspective';
  * @param ctx
  */
 export const toxicity = async (ctx: Context): Promise<Message.TextMessage> => {
-  const message = deunionize(ctx.message);
+  const { message } = ctx;
 
-  if (!('reply_to_message' in message && 'text' in message.reply_to_message))
+  if (!isReply(message) || !isTextMessage(message.reply_to_message))
     return ctx.reply(
       `You'll need to use that command in a reply to a message with text.`,
     );
