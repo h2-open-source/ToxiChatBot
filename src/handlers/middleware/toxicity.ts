@@ -1,6 +1,6 @@
 import { Context } from 'telegraf';
 import { Message } from 'typegram';
-import { isReply, isTextMessage } from 'utils/typeGuards';
+import { isReply, isTextMessage } from '../../utils/typeGuards';
 import { toxicityProbability } from '../../modules/api/perspective';
 
 /**
