@@ -1,4 +1,4 @@
-import { Chat, Message } from 'typegram';
+import { Chat, Message } from '@grammyjs/types';
 
 export const isTextMessage = (
   message: Message.CommonMessage,

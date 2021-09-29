@@ -1,5 +1,5 @@
-import { Context, Markup } from 'telegraf';
-import { ChatFromGetChat, Message } from 'typegram';
+import { Context, InlineKeyboard } from 'grammy';
+import { ChatFromGetChat, Message } from '@grammyjs/types';
 import { findChatsForUser } from '../../modules/db';
 import { isPrivateChat } from '../../utils/telegramUtils';
 import { hasTitle } from '../../utils/typeGuards';
@@ -29,7 +29,7 @@ export const listHandler = async (
   }
 
   const chatsDetails = await Promise.all(
-    chats.map((c) => ctx.telegram.getChat(c.id)),
+    chats.map((c) => ctx.api.getChat(c.id)),
   );
 
   const getTitle = (chat: ChatFromGetChat) =>
@@ -37,10 +37,11 @@ export const listHandler = async (
 
   return ctx.reply(
     'Choose a group below to see a list of users that clicked the button in that group.',
-    Markup.inlineKeyboard(
-      chatsDetails.map((c) =>
-        Markup.button.callback(getTitle(c), `list-${c.id}`),
+    {
+      reply_markup: chatsDetails.reduce(
+        (keyboard, chat) => keyboard.text(getTitle(chat), `list-${chat.id}`),
+        new InlineKeyboard(),
       ),
-    ),
+    },
   );
 };

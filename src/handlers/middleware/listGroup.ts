@@ -1,5 +1,5 @@
-import { Context } from 'telegraf';
-import { Chat, ChatFromGetChat, Message } from 'typegram';
+import { Context } from 'grammy';
+import { Chat, ChatFromGetChat, Message } from '@grammyjs/types';
 import { isUser } from '../../utils/typeGuards';
 import { findChatOptins } from '../../modules/db';
 
@@ -21,27 +21,23 @@ const formatName = (user: ChatFromGetChat) => {
  *
  * @param ctx
  */
-export const listGroup = async (
-  ctx: Context & {
-    match: RegExpExecArray;
-  },
-): Promise<Message.TextMessage> => {
+export const listGroup = async (ctx: Context): Promise<Message.TextMessage> => {
   const groupId = Number(ctx.match[1]);
   const chat = await findChatOptins(groupId);
 
   if (!chat?.users) {
+    ctx.answerCallbackQuery();
     return ctx.reply('No users have clicked the button in that group yet 😢');
   }
 
   // TODO: Show the 'typing' chat action
-  const users = await Promise.all(
-    chat.users.map((u) => ctx.telegram.getChat(u)),
-  );
+  const users = await Promise.all(chat.users.map((u) => ctx.api.getChat(u)));
 
   const userList = users
     .map(formatName)
     .sort((a, b) => (a > b ? 1 : -1))
     .join('\n');
 
+  ctx.answerCallbackQuery();
   return ctx.reply(`These members clicked the button:\n\n${userList}`);
 };

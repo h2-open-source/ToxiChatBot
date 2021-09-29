@@ -1,5 +1,5 @@
-import { Context } from 'telegraf';
-import { Message } from 'typegram';
+import { Context } from 'grammy';
+import { Message } from '@grammyjs/types';
 import { isReply, isTextMessage } from '../../utils/typeGuards';
 import { toxicityProbability } from '../../modules/api/perspective';
 
