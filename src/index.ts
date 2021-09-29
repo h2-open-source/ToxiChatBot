@@ -1,9 +1,8 @@
 import 'dotenv/config';
 import crypto from 'crypto';
 import express from 'express';
+import { webhookCallback } from 'grammy';
 import { middleware } from './handlers/middleware';
-import { help } from './handlers/middleware/help';
-import { start } from './handlers/middleware/start';
 import { bot } from './modules/bot';
 import { init } from './modules/db/mongodb-init';
 import { logMessage, logError } from './utils/log';
@@ -20,19 +19,17 @@ if (!url) {
   process.exit();
 }
 
-bot.start(start);
-bot.help(help);
-
 bot.use(middleware);
 
 const hash = crypto
   .createHash('sha256')
   .update(process.env.BOT_TOKEN || '')
   .digest('base64');
-bot.telegram.setWebhook(`${url}/${hash}`);
+bot.api.setWebhook(`${url}/${hash}`);
 
 const app = express();
-app.use(bot.webhookCallback(`/${hash}`));
+app.use(express.json()); // parse the JSON request body
+app.use(webhookCallback(bot, 'express'));
 app.listen(3000, () => {
   // TODO: stop the app if connection fails
   init();
@@ -45,7 +42,7 @@ bot.catch((err) => logError(err as Error));
 process.once('SIGINT', () => {
   logMessage('\nStopping...');
   try {
-    bot.stop('SIGINT');
+    bot.stop();
   } catch (err) {
     //
   }
@@ -53,7 +50,7 @@ process.once('SIGINT', () => {
 process.once('SIGTERM', () => {
   logMessage('\nStopping...');
   try {
-    bot.stop('SIGTERM');
+    bot.stop();
   } catch (err) {
     //
   }

@@ -1,5 +1,5 @@
-import { Context } from 'telegraf';
-import { Message } from 'typegram';
+import { Context } from 'grammy';
+import { Message } from '@grammyjs/types';
 import { isPrivateChat } from '../../utils/telegramUtils';
 
 const handlePrivate = async (ctx: Context) => {

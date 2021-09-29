@@ -1,5 +1,5 @@
-import { Context } from 'telegraf';
-import { Message } from 'typegram';
+import { Context } from 'grammy';
+import { Message } from '@grammyjs/types';
 
 /**
  * Send an introduction when the bot is added to a group.
@@ -8,15 +8,5 @@ import { Message } from 'typegram';
  */
 export const addedToGroup = async (
   ctx: Context,
-): Promise<Message.TextMessage | null> => {
-  const { message } = ctx;
-  const { username } = await ctx.telegram.getMe();
-
-  const botWasAdded =
-    'new_chat_members' in message &&
-    message.new_chat_members?.some((user) => user.username === username);
-
-  return botWasAdded
-    ? ctx.reply(`Hi there, I'm ${process.env.BOT_NAME}`)
-    : null;
-};
+): Promise<Message.TextMessage> =>
+  ctx.reply(`Hi there, I'm ${process.env.BOT_NAME}`);

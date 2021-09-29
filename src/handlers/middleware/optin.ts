@@ -1,4 +1,4 @@
-import { Context } from 'telegraf';
+import { Context } from 'grammy';
 import { addUserOptIn } from '../../modules/db';
 
 /**
@@ -12,7 +12,8 @@ export const optin = async (ctx: Context): Promise<true> => {
 
   await addUserOptIn(chat, from);
 
-  return ctx.answerCbQuery('Your response has been recorded', {
+  return ctx.answerCallbackQuery({
+    text: 'Your response has been recorded',
     show_alert: false,
   });
 };

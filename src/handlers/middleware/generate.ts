@@ -1,5 +1,5 @@
-import { Context, Markup } from 'telegraf';
-import { Message } from 'typegram';
+import { Context, InlineKeyboard } from 'grammy';
+import { Message } from '@grammyjs/types';
 import { isPrivateChat, isUserAdmin } from '../../utils/telegramUtils';
 
 /**
@@ -12,10 +12,6 @@ import { isPrivateChat, isUserAdmin } from '../../utils/telegramUtils';
  * @param ctx
  */
 export const generate = async (ctx: Context): Promise<Message.TextMessage> => {
-  if (!(await isUserAdmin(ctx, ctx.from.id))) {
-    return ctx.reply('Only admins can use this bot.');
-  }
-
   if (isPrivateChat(ctx)) {
     // Below commented because the forwarded message doesn't show the button.
     // TODO: Figure out how to make the button forward
@@ -27,8 +23,11 @@ export const generate = async (ctx: Context): Promise<Message.TextMessage> => {
     );
   }
 
-  return ctx.reply(
-    'Do you want to stay in this group? Click this button.',
-    Markup.inlineKeyboard([Markup.button.callback('I want to stay!', 'optin')]),
-  );
+  if (!(await isUserAdmin(ctx, ctx.from.id))) {
+    return ctx.reply('Only admins can use this feature.');
+  }
+
+  return ctx.reply('Do you want to stay in this group? Click this button.', {
+    reply_markup: new InlineKeyboard().text('I want to stay!', 'optin'),
+  });
 };

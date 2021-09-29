@@ -1,5 +1,5 @@
-import { Context } from 'telegraf';
-import { Message } from 'typegram';
+import { Context } from 'grammy';
+import { Message } from '@grammyjs/types';
 import { findUser, addUser, addChat } from '../../modules/db/index';
 import { isPrivateChat, isUserAdmin } from '../../utils/telegramUtils';
 
@@ -38,7 +38,7 @@ const handleGroupStart = async (ctx: Context) => {
 
     await ctx.reply('Nice! Take a look at your chat with me to get started.');
 
-    return ctx.telegram.sendMessage(
+    return ctx.api.sendMessage(
       ctx.from.id,
       'Success! Now you can manage your settings for this group.',
     );

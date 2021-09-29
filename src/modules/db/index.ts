@@ -1,5 +1,5 @@
 import mongoose, { Model, ObjectId } from 'mongoose';
-import { Chat, User } from 'typegram';
+import { Chat, User } from '@grammyjs/types';
 import { logError } from '../../utils/log';
 
 // TODO: move schemas (and models?) to their own files
