@@ -30,6 +30,7 @@ node_modules
 
 # Local environment variables
 .env
+.env copy
 
 # Transpiled release builds
 dist
