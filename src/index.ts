@@ -2,7 +2,7 @@ import 'dotenv/config';
 import crypto from 'crypto';
 import express from 'express';
 import { webhookCallback } from 'grammy';
-import { middleware } from './handlers/middleware';
+import { middleware } from './middleware';
 import { bot } from './modules/bot';
 import { init } from './modules/db/mongodb-init';
 import { logMessage, logError } from './utils/log';

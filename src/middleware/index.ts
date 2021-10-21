@@ -1,13 +1,15 @@
 import { Composer } from 'grammy';
-import { logError } from '../../utils/log';
-import { addedToGroup } from './addedToGroup';
-import { generate } from './generate';
-import { listHandler } from './list';
-import { listGroup } from './listGroup';
-import { optin } from './optin';
-import { toxicity } from './toxicity';
-import { start } from './start';
-import { help } from './help';
+import { logError } from '../utils/log';
+import {
+  addedToGroup,
+  generate,
+  listHandler,
+  listGroup,
+  optin,
+  toxicity,
+  start,
+  help,
+} from './handlers';
 
 const composer = new Composer();
 
