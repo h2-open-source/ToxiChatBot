@@ -1,7 +1,5 @@
 import { Context } from 'grammy';
-import { Chat, ChatFromGetChat, Message } from '@grammyjs/types';
-import { isUser } from '../../utils/typeGuards';
-import { findChatOptins, setChatWatching } from '../../modules/db';
+import { setChatWatching } from '../../modules/db';
 import { getTitle } from '../../utils/getChatTitle';
 
 /**
@@ -9,9 +7,7 @@ import { getTitle } from '../../utils/getChatTitle';
  *
  * @param ctx
  */
-export const enableWatch = async (
-  ctx: Context,
-): Promise<Message.TextMessage> => {
+export const enableWatch = async (ctx: Context): Promise<void> => {
   const chatId = Number(ctx.match[1]);
   const chat = await ctx.api.getChat(chatId);
 
@@ -20,7 +16,7 @@ export const enableWatch = async (
   await setChatWatching(chat);
 
   ctx.answerCallbackQuery();
-  return ctx.reply(
+  ctx.reply(
     `Now watching ${getTitle(chat)}\\. Use \`/lookaway\` to stop\\.
 
 All messages in the chat will be analyzed by the Perspective API\\. Use \`/about\` for more info\\.`,

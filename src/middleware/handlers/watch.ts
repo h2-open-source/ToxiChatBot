@@ -1,6 +1,6 @@
 import { Context, InlineKeyboard } from 'grammy';
 import { isPrivateChat, isUserAdmin } from '../../utils/telegramUtils';
-import { getUserChatsUnwatched } from '../../modules/db';
+import { getUserChatsUnwatched, setChatWatching } from '../../modules/db';
 import { getTitle } from '../../utils/getChatTitle';
 
 /**
@@ -17,7 +17,17 @@ export const watch = async (ctx: Context): Promise<void> => {
       return;
     }
 
-    // TODO: watch this chat
+    const { chat } = ctx;
+
+    await setChatWatching(chat.id);
+    ctx.reply(
+      `Now watching ${getTitle(chat)}\\. Use \`/lookaway\` to stop\\.
+
+All messages in the chat will be analyzed by the Perspective API\\. Use \`/about\` for more info\\.`,
+      {
+        parse_mode: 'MarkdownV2',
+      },
+    );
     return;
   }
 
