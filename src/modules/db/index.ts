@@ -1,5 +1,5 @@
 import mongoose, { Model, ObjectId } from 'mongoose';
-import { Chat, User } from '@grammyjs/types';
+import { Chat as TelegramChat, User as TelegramUser } from '@grammyjs/types';
 import { logError } from '../../utils/log';
 
 // TODO: move schemas (and models?) to their own files
@@ -41,7 +41,7 @@ const Optin: Model<IOptin> = mongoose.model('Optin', optinSchema);
  *
  * @param telegramUser The Telegram user object to persist
  */
-export const addUser = async (telegramUser: User): Promise<void> => {
+export const addUser = async (telegramUser: TelegramUser): Promise<void> => {
   try {
     await User.findOneAndUpdate(
       { id: telegramUser.id },
@@ -61,7 +61,7 @@ export const addUser = async (telegramUser: User): Promise<void> => {
  *
  * @returns The stored User
  */
-export const findUser = async (telegramUser: User): Promise<IUser> => {
+export const findUser = async (telegramUser: TelegramUser): Promise<IUser> => {
   try {
     return await User.findOne({ id: telegramUser.id });
   } catch (err) {
@@ -78,7 +78,7 @@ export const findUser = async (telegramUser: User): Promise<IUser> => {
  * @returns An array of stored Chats
  */
 export const findChatsForUser = async (
-  telegramUser: User,
+  telegramUser: TelegramUser,
 ): Promise<IChat[]> => {
   try {
     const user = await findUser(telegramUser);
@@ -115,8 +115,8 @@ export const findChatOptins = async (chatId: number): Promise<IOptin> => {
  * @returns
  */
 export const addChat = async (
-  telegramChat: Chat,
-  telegramUser: User,
+  telegramChat: TelegramChat,
+  telegramUser: TelegramUser,
 ): Promise<void> => {
   try {
     const user = await findUser(telegramUser);
@@ -142,8 +142,8 @@ export const addChat = async (
  * @returns
  */
 export const addUserOptIn = async (
-  telegramChat: Chat,
-  telegramUser: User,
+  telegramChat: TelegramChat,
+  telegramUser: TelegramUser,
 ): Promise<void> => {
   try {
     const newChat = await Optin.findOneAndUpdate(
@@ -169,7 +169,7 @@ export const addUserOptIn = async (
  * @returns The stored Chats
  */
 export const getUserChatsUnwatched = async (
-  telegramUser: User,
+  telegramUser: TelegramUser,
 ): Promise<IChat[]> => {
   try {
     const user = await findUser(telegramUser);
@@ -183,9 +183,20 @@ export const getUserChatsUnwatched = async (
   return null;
 };
 
-export const setChatWatching = async (telegramChat: Chat): Promise<void> => {
+/**
+ * Set the watching status of the specified chat
+ *
+ * @param telegramChat The Telegram chat, or its id, to set watching for
+ * @param watching Watching status to apply
+ */
+export const setChatWatching = async (
+  telegramChat: TelegramChat | number,
+  watching = true,
+): Promise<void> => {
   try {
-    await Chat.findOneAndUpdate({ id: telegramChat.id }, { watching: true });
+    const id =
+      typeof telegramChat === 'number' ? telegramChat : telegramChat.id;
+    await Chat.findOneAndUpdate({ id }, { watching });
   } catch (err) {
     logError(err);
   }
