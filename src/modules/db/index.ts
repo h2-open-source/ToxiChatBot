@@ -6,11 +6,13 @@ import { logError } from '../../utils/log';
 const chatSchema = new mongoose.Schema({
   id: { type: Number, required: true, unique: true },
   users: [mongoose.Types.ObjectId],
+  watching: { type: Boolean, required: true, default: false },
 });
 interface IChat extends Document {
   _id: ObjectId;
   id: number;
   users: ObjectId[];
+  watching: boolean;
 }
 const Chat: Model<IChat> = mongoose.model('Chat', chatSchema);
 
@@ -154,6 +156,36 @@ export const addUserOptIn = async (
     );
 
     if (newChat === null) throw Error('Failed to create optin chat');
+  } catch (err) {
+    logError(err);
+  }
+};
+
+/**
+ * Find all chats for a user which aren't being watched
+ *
+ * @param telegramUser The Telegram user
+ *
+ * @returns The stored Chats
+ */
+export const getUserChatsUnwatched = async (
+  telegramUser: User,
+): Promise<IChat[]> => {
+  try {
+    const user = await findUser(telegramUser);
+    return await Chat.find({
+      users: user._id,
+      $or: [{ watching: false }, { watching: null }],
+    });
+  } catch (err) {
+    logError(err);
+  }
+  return null;
+};
+
+export const setChatWatching = async (telegramChat: Chat): Promise<void> => {
+  try {
+    await Chat.findOneAndUpdate({ id: telegramChat.id }, { watching: true });
   } catch (err) {
     logError(err);
   }

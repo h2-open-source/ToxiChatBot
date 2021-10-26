@@ -6,3 +6,5 @@ export { optin } from './optin';
 export { toxicity } from './toxicity';
 export { start } from './start';
 export { help } from './help';
+export { watch } from './watch';
+export { enableWatch } from './enableWatch';
