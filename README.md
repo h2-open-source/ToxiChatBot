@@ -22,9 +22,10 @@ npm install --global yarn
 yarn
 ```
 
-### Install and start Mongo
+### Install and start Mongo w/Docker
+* [docker/docker-compose](https://docs.docker.com/get-docker/)
 
-or otherwise obtain accesss to a MongoDB instance.
+Run `docker-compose up -d` to start MongoDB & Mongo Express (mongo web interface). In your web browser, navigate to [http://127.0.0.1:8081](http://127.0.0.1:8081) to view the schema.
 
 ### Create a filed named `.env` in the root directory
 
