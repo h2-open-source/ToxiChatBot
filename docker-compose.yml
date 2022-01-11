@@ -1,6 +1,20 @@
 version: '3.1'
 
 services:
+  node:
+    container_name: toxinode
+    image: "node:16"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+        - NODE_ENV=development
+    volumes:
+        - ./:/home/node/app
+    expose:
+        - "8080"
+    command: "yarn"
+    command: "yarn start"
+
   mongo:
     container_name: toximongo
     image: mongo
@@ -24,4 +38,4 @@ services:
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: toxipass
-      ME_CONFIG_MONGODB_URL: mongodb://root:toxipass@mongo:27017/toxichatdb
+      ME_CONFIG_MONGODB_URL: mongodb://root:toxipass@toximongo:27017/toxichatdb

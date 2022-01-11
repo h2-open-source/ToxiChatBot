@@ -34,3 +34,6 @@ node_modules
 
 # Transpiled release builds
 dist
+
+# volume created by docker
+mongo-volume
