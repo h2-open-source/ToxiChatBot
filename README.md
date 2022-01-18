@@ -1,6 +1,6 @@
 # ToxiChatBot
 
-A Telegram bot written in TypeScript for to make moderation of large groups simpler. It implements calls to the [Perspective API](https://www.perspectiveapi.com/) to monitor toxicity of the chat.
+A Telegram bot written in TypeScript to make moderation of large groups simpler. It implements calls to the [Perspective API](https://www.perspectiveapi.com/) to monitor toxicity of the chat.
 
 ## Requirements
 * [NVM](https://github.com/nvm-sh/nvm)(Recommended)
@@ -32,12 +32,12 @@ Use [@BotFather](https://t.me/botfather) to create a Telegram bot and get your b
 To get your Perspective API token, follow the [getting started guide](https://developers.perspectiveapi.com/s/docs-get-started), and then follow the "Enable the API" section.
 
 ## Start w/Docker
-To simplify getting started with this bot, a `docker-compose.yml` file has been included. Ensure you have installed [docker/docker-compose](https://docs.docker.com/get-docker/). Once installed, run `docker-compose up -d` to start the environment. This will do a few things:
+To simplify getting started with this bot, a `docker-compose.yml` file has been included. Ensure you have installed [docker](https://docs.docker.com/get-docker/) and [docker-compose](https://docs.docker.com/compose/install/). Once installed, run `docker-compose up -d` to start the environment. This will do a few things:
 1. Download and install images for Node 16, MongoDB, and Mongo Express (web interface for managing MongoDB)
 2. Install required JavaScript dependencies
 3. Setup [ngrok](https://ngrok.com/) tunnel
 4. Set the webhook of your bot to the ngrok tunnel.
-5. Start [nodemon](https://nodemon.io/) to watch TypeScript files, buil on save, and restart the application.
+5. Start [nodemon](https://nodemon.io/) to watch TypeScript files, build on save, and restart the application.
 
 To access Mongo Express, navigate to [http://127.0.0.1:8081](http://127.0.0.1:8081) in your web browser.
 
