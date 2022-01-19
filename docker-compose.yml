@@ -12,8 +12,7 @@ services:
         - ./:/home/node/app
     expose:
         - "8080"
-    command: "yarn"
-    command: "yarn start"
+    command: [sh, -c, "yarn && yarn start"]
 
   mongo:
     container_name: toximongo
