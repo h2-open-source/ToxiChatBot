@@ -41,6 +41,7 @@ To simplify getting started with this bot, a `docker-compose.yml` file has been 
 
 To access Mongo Express, navigate to [http://127.0.0.1:8081](http://127.0.0.1:8081) in your web browser.
 
+To run commands within the container, for instance; to install new packages try `docker-compose exec node sh -c "yarn add <NEW_PACKAGE_NAME>"`. This tells docker-compose to execute a command within the 'node' container, that the command should be to open a shell, and that the shell should then install a new package with yarn.
 
 ## Start Locally:
 Get Node via NVM
