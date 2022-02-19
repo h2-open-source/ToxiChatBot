@@ -46,11 +46,11 @@
   },
   "jest": {
     "moduleFileExtensions": [
+      "ts",
+      "tsx",
       "js",
       "jsx",
-      "json",
-      "ts",
-      "tsx"
+      "json"
     ],
     "moduleDirectories": [
       "node_modules"
