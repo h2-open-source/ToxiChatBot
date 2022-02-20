@@ -3,7 +3,7 @@
 A Telegram bot written in TypeScript to make moderation of large groups simpler. It implements calls to the [Perspective API](https://www.perspectiveapi.com/) to monitor toxicity of the chat.
 
 ## Requirements
-* [NVM](https://github.com/nvm-sh/nvm)(Recommended)
+* [NVM](https://github.com/nvm-sh/nvm) (Recommended)
 * [Node](https://nodejs.org/)
 * [Yarn](https://yarnpkg.com)
 * [MongoDB](https://www.mongodb.com/)
@@ -31,13 +31,15 @@ Use [@BotFather](https://t.me/botfather) to create a Telegram bot and get your b
 
 To get your Perspective API token, follow the [getting started guide](https://developers.perspectiveapi.com/s/docs-get-started), and then follow the "Enable the API" section.
 
-## Start w/Docker
-To simplify getting started with this bot, a `docker-compose.yml` file has been included. Ensure you have installed [docker](https://docs.docker.com/get-docker/) and [docker-compose](https://docs.docker.com/compose/install/). Once installed, run `docker-compose up -d` to start the environment. This will do a few things:
+## Start with Docker
+To simplify getting started with this bot, a `docker-compose.yml` file has been included. Ensure you have installed [docker](https://docs.docker.com/get-docker/) and [docker-compose](https://docs.docker.com/compose/install/). Once installed, run `yarn start:docker` to start the environment. The containers will do a few things:
 1. Download and install images for Node 16, MongoDB, and Mongo Express (web interface for managing MongoDB)
 2. Install required JavaScript dependencies
 3. Setup [ngrok](https://ngrok.com/) tunnel
 4. Set the webhook of your bot to the ngrok tunnel.
 5. Start [nodemon](https://nodemon.io/) to watch TypeScript files, build on save, and restart the application.
+
+Once the containers have started, your bot will be running ToxiChatBot. Changes you make will be automatically applied.
 
 To access Mongo Express, navigate to [http://127.0.0.1:8081](http://127.0.0.1:8081) in your web browser.
 
@@ -62,7 +64,7 @@ yarn
 Run the application
 
 ```
-yarn start
+yarn start:local
 ```
 
 This will start a watcher that will compile the code, then run a script that creates an ngrok tunnel and starts up the dev server behind it. When the server starts, it automatically updates the Telegram webhook to point at your ngrok tunnel. If you get the console message "MongoDB connection successful..." you're up and running!

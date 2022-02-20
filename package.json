@@ -34,7 +34,8 @@
     "typescript": "^4.4.3"
   },
   "scripts": {
-    "start": "nodemon --watch \"src/**\" --ext \"ts,js,json\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/devStart.ts\"",
+    "start:local": "nodemon --watch \"src/**\" --ext \"ts,js,json\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/devStart.ts\"",
+    "start:docker": "docker-compose up -d",
     "lint": "yarn run eslint src",
     "build": "tsc",
     "serve": "ts-node ./src/index.ts"
