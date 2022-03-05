@@ -68,7 +68,7 @@ yarn start
 This will start a watcher that will compile the code, then run a script that creates an ngrok tunnel and starts up the dev server behind it. When the server starts, it automatically updates the Telegram webhook to point at your ngrok tunnel. If you get the console message "MongoDB connection successful..." you're up and running!
 
 ## Tests
-We use [Jest](https://jestjs.io/docs/getting-started) for testing. To run the tests, run `npm test`. If you don't have NPM installed locally, you can run the command `docker-compose exec node sh -c \"./node_modules/.bin/jest --verbose\"` instead.
+We use [Jest](https://jestjs.io/docs/getting-started) for testing. To run the tests, run `npm run test:docker`/`yarn test:docker`. This will run the tests inside of the running Docker containers. If you don't have NPM installed locally, you can run `docker-compose exec node sh -c "yarn test"` instead.
 
 ### Configure your editor to use Prettier and ESLint
 
