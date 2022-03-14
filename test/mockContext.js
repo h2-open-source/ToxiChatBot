@@ -1,12 +1,12 @@
 import { Context } from 'grammy';
 
-const botDetails = {
+export const botDetails = {
   id: 42,
   is_bot: true,
   first_name: process.env.BOT_NAME,
   username: process.env.BOT_USERNAME,
 };
-const me = {
+export const me = {
   can_join_groups: true,
   can_read_all_group_messages: true,
   supports_inline_queries: true,
