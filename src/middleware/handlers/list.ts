@@ -1,8 +1,8 @@
 import { Context, InlineKeyboard } from 'grammy';
-import { ChatFromGetChat, Message } from '@grammyjs/types';
+import { Message } from '@grammyjs/types';
 import { findChatsForUser } from '../../modules/db';
 import { isPrivateChat } from '../../utils/telegramUtils';
-import { hasTitle } from '../../utils/typeGuards';
+import { getTitle } from '../../utils/getChatTitle';
 
 /**
  * Responds to user request for a list of groups to which they've sent opt-in buttons.
@@ -31,9 +31,6 @@ export const listHandler = async (
   const chatsDetails = await Promise.all(
     chats.map((c) => ctx.api.getChat(c.id)),
   );
-
-  const getTitle = (chat: ChatFromGetChat) =>
-    hasTitle(chat) ? chat.title : chat.username;
 
   return ctx.reply(
     'Choose a group below to see a list of users that clicked the button in that group.',
