@@ -5,25 +5,29 @@ import { bot } from '../bot';
 jest.mock('../../src/modules/db');
 jest.mock('../../src/utils/telegramUtils');
 
-const me = {
+const botDetails = {
   id: 42,
   is_bot: true,
-  first_name: 'ToxiChatBot',
-  username: 'ToxiChatBot',
+  first_name: process.env.BOT_NAME,
+  username: process.env.BOT_USERNAME,
+};
+const me = {
   can_join_groups: true,
   can_read_all_group_messages: true,
   supports_inline_queries: true,
+  allowed_updates: true,
 };
 
+// TODO: move mockContext to its own module
 function mockContext(message, options = {}) {
-  const update = {
+  let update = {
     update_id: 111111111,
     message: {
       message_id: 42069,
       from: {
         id: 'userId' in options ? options.userId : 333333333, //222222222 is admin in mocks
         is_bot: false,
-        first_name: '𝙳𝚢𝚕𝚊𝚗',
+        first_name: 'Test',
         username: 'userId' in options ? options.username : 'test_user',
         language_code: 'en',
       },
@@ -31,7 +35,7 @@ function mockContext(message, options = {}) {
         id: 333333333,
         first_name: '𝙳𝚢𝚕𝚊𝚗',
         username: 'turdfurgeson',
-        type: 'type' in options ? options.type : 'private',
+        type: 'private',
       },
       date: 1645985137,
       text: message,
@@ -39,7 +43,21 @@ function mockContext(message, options = {}) {
     },
   };
   const api = { raw: {}, config: {} };
-  return new Context(update, api, me);
+  if ('type' in options && options.type === 'group') {
+    update.message.chat.type = 'group';
+    update.message.chat.title = 'Test group';
+    update.message.chat.all_members_are_administrators = false;
+    delete update.message.chat.first_name;
+    delete update.message.chat.username;
+  }
+  if ('new_chat_member' in options && options.new_chat_member === 'me') {
+    update.message.new_chat_participant = botDetails;
+    update.message.new_chat_member = botDetails;
+    update.message.new_chat_members = [botDetails];
+    delete update.message.text;
+    delete update.message.entities;
+  }
+  return new Context(update, api, { ...botDetails, ...me });
 }
 
 let outgoingRequests = [];
@@ -51,7 +69,7 @@ beforeAll(async () => {
     return { ok: true, result: true };
   });
 
-  // set handlers
+  // set handlers via composer
   bot.use(middleware);
 
   // start bot
@@ -137,3 +155,17 @@ describe('start handler', () => {
     );
   });
 });
+
+// TODO: outgoingRequests is empty but shouldn't be for this test
+// likely has something to do with how handleUpdate works
+// w/Composer and filter queries
+//describe('addedToGroup handler', () => {
+//  it('should reply with greeting message', async () => {
+//    const ctx = mockContext('', { type: 'group', new_chat_member: 'me' });
+//    await bot.handleUpdate(ctx);
+//    expect(outgoingRequests.length).toBe(1);
+//    expect(outgoingRequests.pop().payload.text).toBe(
+//      `Hi there, I'm ${botDetails.username}`,
+//    );
+//  });
+//});
