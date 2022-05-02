@@ -42,7 +42,7 @@
     "lint": "yarn run eslint src",
     "build": "tsc",
     "serve": "ts-node ./src/index.ts",
-    "test": "jest",
+    "test": "jest --verbose",
     "test:docker": "docker-compose exec node sh -c \"./node_modules/.bin/jest --verbose\""
   },
   "jest": {
