@@ -4,7 +4,8 @@ import { getUserChatsUnwatched, setChatWatching } from '../../modules/db';
 import { getTitle } from '../../utils/getChatTitle';
 
 /**
- * Provide list of unwatched chats for the user to enable watch mode
+ * In groups, start watching the group.
+ * In a Private Chat, provide a list of unwatched chats for the user to enable watch mode
  *
  * @param ctx
  */

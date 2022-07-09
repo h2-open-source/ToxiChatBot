@@ -4,6 +4,7 @@ import { getTitle } from '../../utils/getChatTitle';
 
 /**
  * Enables watch mode for the specified group
+ * Used through the buttons provided from handlers/watch.js
  *
  * @param ctx
  */
