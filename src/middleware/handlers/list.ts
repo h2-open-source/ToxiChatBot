@@ -22,7 +22,7 @@ export const listHandler = async (
 
   const chats = await findChatsForUser(ctx.from);
 
-  if (chats.length < 1) {
+  if (chats == null || chats.length < 1) {
     return ctx.reply(
       'You have no groups set up yet. Try calling /start in your group.',
     );
