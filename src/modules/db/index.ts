@@ -1,16 +1,18 @@
 import mongoose, { Model, ObjectId } from 'mongoose';
-import { Chat, User } from '@grammyjs/types';
+import { Chat as TelegramChat, User as TelegramUser } from '@grammyjs/types';
 import { logError } from '../../utils/log';
 
 // TODO: move schemas (and models?) to their own files
 const chatSchema = new mongoose.Schema({
   id: { type: Number, required: true, unique: true },
   users: [mongoose.Types.ObjectId],
+  watching: { type: Boolean, required: true, default: false },
 });
 interface IChat extends Document {
   _id: ObjectId;
   id: number;
   users: ObjectId[];
+  watching: boolean;
 }
 const Chat: Model<IChat> = mongoose.model('Chat', chatSchema);
 
@@ -39,7 +41,7 @@ const Optin: Model<IOptin> = mongoose.model('Optin', optinSchema);
  *
  * @param telegramUser The Telegram user object to persist
  */
-export const addUser = async (telegramUser: User): Promise<void> => {
+export const addUser = async (telegramUser: TelegramUser): Promise<void> => {
   try {
     await User.findOneAndUpdate(
       { id: telegramUser.id },
@@ -59,7 +61,7 @@ export const addUser = async (telegramUser: User): Promise<void> => {
  *
  * @returns The stored User
  */
-export const findUser = async (telegramUser: User): Promise<IUser> => {
+export const findUser = async (telegramUser: TelegramUser): Promise<IUser> => {
   try {
     return await User.findOne({ id: telegramUser.id });
   } catch (err) {
@@ -76,7 +78,7 @@ export const findUser = async (telegramUser: User): Promise<IUser> => {
  * @returns An array of stored Chats
  */
 export const findChatsForUser = async (
-  telegramUser: User,
+  telegramUser: TelegramUser,
 ): Promise<IChat[]> => {
   try {
     const user = await findUser(telegramUser);
@@ -113,8 +115,8 @@ export const findChatOptins = async (chatId: number): Promise<IOptin> => {
  * @returns
  */
 export const addChat = async (
-  telegramChat: ghat,
-  telegramUser: User,
+  telegramChat: TelegramChat,
+  telegramUser: TelegramUser,
 ): Promise<void> => {
   try {
     const user = await findUser(telegramUser);
