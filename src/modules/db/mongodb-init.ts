@@ -6,13 +6,13 @@ import * as log from '../../utils/log';
 // mongoose.set('useUnifiedTopology', true);
 // mongoose.set('useCreateIndex', true);
 
-const prepareConnectionString = (config: {
+export const prepareConnectionString = (config: {
   user: string;
   password: string;
   server: string;
   database: string;
 }) => {
-  let connectionString = 'mongodb://';
+  let connectionString: string = 'mongodb://';
 
   if (config.user) {
     connectionString += `${config.user}:${config.password}@`;
