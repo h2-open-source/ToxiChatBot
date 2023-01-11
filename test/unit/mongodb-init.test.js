@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'jest';
 import {
   init,
   prepareConnectionString,
@@ -17,10 +18,10 @@ describe('mongodb-init', () => {
   });
 
   // TODO: verify connection fails/succeeds
-  //it("should error when database isn't found", () => {
-  //  expect.assertions(1);
-  //  return init().catch((e) =>
-  //    expect(e).toContain('Error occurred while connecting to DB'),
-  //  );
-  //});
+  // it("should error when database isn't found", () => {
+  //   expect.assertions(1);
+  //   return init().catch((e) =>
+  //     expect(e).toContain('Error occurred while connecting to DB'),
+  //   );
+  // });
 });

@@ -9,6 +9,8 @@ import {
   toxicity,
   start,
   help,
+  watch,
+  enableWatch,
 } from './handlers';
 
 const composer = new Composer();
@@ -19,6 +21,9 @@ composer.command('start', start);
 composer.command('help', help);
 
 composer.command('toxicity', toxicity);
+
+composer.command('watch', watch);
+composer.callbackQuery(/^[watch-]+(-[\d]+)$/, enableWatch);
 
 composer.command('generate', generate);
 composer.callbackQuery('optin', optin);

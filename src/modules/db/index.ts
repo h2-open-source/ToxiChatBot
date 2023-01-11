@@ -82,7 +82,7 @@ export const findChatsForUser = async (
 ): Promise<IChat[]> => {
   try {
     const user = await findUser(telegramUser);
-    if(user) {
+    if (user) {
       return await Chat.find({ users: user._id });
     }
   } catch (err) {
@@ -176,7 +176,7 @@ export const getUserChatsUnwatched = async (
   try {
     const user = await findUser(telegramUser);
     return await Chat.find({
-      users: user._id,
+      users: user?._id,
       $or: [{ watching: false }, { watching: null }],
     });
   } catch (err) {
@@ -194,12 +194,13 @@ export const getUserChatsUnwatched = async (
 export const setChatWatching = async (
   telegramChat: TelegramChat | number,
   watching = true,
-): Promise<void> => {
+): Promise<IChat> => {
   try {
     const id =
       typeof telegramChat === 'number' ? telegramChat : telegramChat.id;
-    await Chat.findOneAndUpdate({ id }, { watching });
+    return await Chat.findOneAndUpdate({ id }, { watching });
   } catch (err) {
     logError(err);
+    return null;
   }
 };
