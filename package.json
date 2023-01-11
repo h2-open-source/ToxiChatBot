@@ -40,6 +40,7 @@
   "scripts": {
     "start:local": "nodemon --watch \"src/**\" --ext \"ts,js,json\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/devStart.ts\"",
     "start:docker": "docker-compose up -d",
+    "docker:node:logs": "docker-compose logs -f node",
     "lint": "yarn run eslint src",
     "build": "tsc",
     "serve": "ts-node ./src/index.ts",
