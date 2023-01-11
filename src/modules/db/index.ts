@@ -1,40 +1,40 @@
-import mongoose, { Model, ObjectId } from 'mongoose';
+import mongoose, { ObjectId } from 'mongoose';
 import { Chat as TelegramChat, User as TelegramUser } from '@grammyjs/types';
 import { logError } from '../../utils/log';
 
 // TODO: move schemas (and models?) to their own files
-const chatSchema = new mongoose.Schema({
-  id: { type: Number, required: true, unique: true },
-  users: [mongoose.Types.ObjectId],
-  watching: { type: Boolean, required: true, default: false },
-});
 interface IChat extends Document {
   _id: ObjectId;
   id: number;
   users: ObjectId[];
   watching: boolean;
 }
-const Chat: Model<IChat> = mongoose.model('Chat', chatSchema);
-
-const userSchema = new mongoose.Schema({
+const chatSchema = new mongoose.Schema<IChat>({
   id: { type: Number, required: true, unique: true },
+  users: [mongoose.Types.ObjectId],
+  watching: { type: Boolean, required: true, default: false },
 });
+const Chat = mongoose.model('Chat', chatSchema);
+
 interface IUser extends Document {
   _id: ObjectId;
   id: number;
 }
-const User: Model<IUser> = mongoose.model('User', userSchema);
-
-const optinSchema = new mongoose.Schema({
-  chatId: { type: Number, required: true, unique: true },
-  users: [Number],
+const userSchema = new mongoose.Schema<IUser>({
+  id: { type: Number, required: true, unique: true },
 });
+const User = mongoose.model('User', userSchema);
+
 interface IOptin extends Document {
   _id: ObjectId;
   chatId: number;
   users: number[];
 }
-const Optin: Model<IOptin> = mongoose.model('Optin', optinSchema);
+const optinSchema = new mongoose.Schema<IOptin>({
+  chatId: { type: Number, required: true, unique: true },
+  users: [Number],
+});
+const Optin = mongoose.model('Optin', optinSchema);
 
 /**
  * Persist a user.
@@ -82,7 +82,7 @@ export const findChatsForUser = async (
 ): Promise<IChat[]> => {
   try {
     const user = await findUser(telegramUser);
-    if(user) {
+    if (user) {
       return await Chat.find({ users: user._id });
     }
   } catch (err) {

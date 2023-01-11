@@ -12,7 +12,7 @@ export const prepareConnectionString = (config: {
   server: string;
   database: string;
 }) => {
-  let connectionString: string = 'mongodb://';
+  let connectionString = 'mongodb://';
 
   if (config.user) {
     connectionString += `${config.user}:${config.password}@`;
