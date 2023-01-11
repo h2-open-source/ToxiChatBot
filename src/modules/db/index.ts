@@ -1,6 +1,11 @@
 import mongoose, { Model, ObjectId } from 'mongoose';
 import { Chat as TelegramChat, User as TelegramUser } from '@grammyjs/types';
+import { okAsync, err, Result } from 'neverthrow';
+
 import { logError } from '../../utils/log';
+
+// TODO: move types like this into their own files
+export type DbResult<T> = Result<T, Error>;
 
 // TODO: move schemas (and models?) to their own files
 const chatSchema = new mongoose.Schema({
@@ -79,16 +84,16 @@ export const findUser = async (telegramUser: TelegramUser): Promise<IUser> => {
  */
 export const findChatsForUser = async (
   telegramUser: TelegramUser,
-): Promise<IChat[]> => {
+): Promise<DbResult<IChat[]>> => {
   try {
     const user = await findUser(telegramUser);
-    if(user) {
-      return await Chat.find({ users: user._id });
+    if (user) {
+      return okAsync(await Chat.find({ users: user._id }));
     }
-  } catch (err) {
-    logError(err);
+  } catch (e) {
+    logError(e);
+    return err(e);
   }
-  return null;
 };
 
 /**
@@ -194,12 +199,13 @@ export const getUserChatsUnwatched = async (
 export const setChatWatching = async (
   telegramChat: TelegramChat | number,
   watching = true,
-): Promise<void> => {
+): Promise<DbResult<IChat>> => {
   try {
     const id =
       typeof telegramChat === 'number' ? telegramChat : telegramChat.id;
-    await Chat.findOneAndUpdate({ id }, { watching });
-  } catch (err) {
-    logError(err);
+    return okAsync(await Chat.findOneAndUpdate({ id }, { watching }));
+  } catch (e) {
+    logError(e);
+    return err(e);
   }
 };
