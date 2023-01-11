@@ -20,30 +20,42 @@ export const watch = async (ctx: Context): Promise<void> => {
 
     const { chat } = ctx;
 
-    await setChatWatching(chat.id);
-    ctx.reply(
-      `Now watching ${getTitle(chat)}\\. Use \`/lookaway\` to stop\\.
+    const watchResult = await setChatWatching(chat.id);
 
-All messages in the chat will be analyzed by the Perspective API\\. Use \`/about\` for more info\\.`,
-      {
-        parse_mode: 'MarkdownV2',
-      },
+    if (!watchResult) {
+      ctx.reply(
+        `I'm not running in this group yet. Try running /start in the group you want to watch.`,
+      );
+      return;
+    }
+
+    ctx.reply(
+      `Now watching ${getTitle(chat)}. Use /lookaway to stop.
+
+All messages in the chat will be analyzed by the Perspective API. Use /about for more info.`,
     );
+
     return;
   }
 
   const chats = await getUserChatsUnwatched(user);
+
+  if (chats.length < 1) {
+    ctx.reply(
+      `I'm not running in any of your chats yet. Try running /start in the group you want to watch.`,
+    );
+    return;
+  }
 
   const chatsDetails = await Promise.all(
     chats.map((c) => ctx.api.getChat(c.id)),
   );
 
   ctx.reply(
-    `Choose a chat to watch\\.
+    `Choose a chat to watch.
 
-To stop watching a chat, use \`/lookaway\``,
+To stop watching a chat, use /lookaway`,
     {
-      parse_mode: 'MarkdownV2',
       reply_markup: chatsDetails.reduce(
         (keyboard, chat) => keyboard.text(getTitle(chat), `watch-${chat.id}`),
         new InlineKeyboard(),
