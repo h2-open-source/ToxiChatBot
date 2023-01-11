@@ -2,25 +2,8 @@ import mongoose, { ObjectId } from 'mongoose';
 import { Chat as TelegramChat, User as TelegramUser } from '@grammyjs/types';
 import { okAsync, errAsync, err, ResultAsync } from 'neverthrow';
 
+import { DbResult, NotFoundError, OtherError } from './types';
 import { logError } from '../../utils/log';
-
-// TODO: move types like this into their own files
-export enum DbErrorType {
-  NotFound,
-  Other,
-}
-export type DbError =
-  | { type: DbErrorType.NotFound; message?: string }
-  | { type: DbErrorType.Other; error?: Error | unknown };
-export const NotFoundError = (message = ''): DbError => ({
-  type: DbErrorType.NotFound,
-  message,
-});
-export const OtherError = (error?: Error | unknown): DbError => ({
-  type: DbErrorType.Other,
-  error,
-});
-export type DbResult<T> = ResultAsync<T, DbError>;
 
 // TODO: move schemas (and models?) to their own files
 interface IChat extends Document {
