@@ -82,7 +82,7 @@ export const findChatsForUser = async (
 ): Promise<IChat[]> => {
   try {
     const user = await findUser(telegramUser);
-    if(user) {
+    if (user) {
       return await Chat.find({ users: user._id });
     }
   } catch (err) {
