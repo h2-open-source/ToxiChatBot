@@ -1,11 +1,11 @@
 import mongoose, { Model, ObjectId } from 'mongoose';
 import { Chat as TelegramChat, User as TelegramUser } from '@grammyjs/types';
-import { okAsync, err, Result } from 'neverthrow';
+import { okAsync, err, Result, ResultAsync } from 'neverthrow';
 
 import { logError } from '../../utils/log';
 
 // TODO: move types like this into their own files
-export type DbResult<T> = Result<T, Error>;
+export type DbResult<T> = ResultAsync<T, Error | unknown>;
 
 // TODO: move schemas (and models?) to their own files
 const chatSchema = new mongoose.Schema({
@@ -66,13 +66,14 @@ export const addUser = async (telegramUser: TelegramUser): Promise<void> => {
  *
  * @returns The stored User
  */
-export const findUser = async (telegramUser: TelegramUser): Promise<IUser> => {
-  try {
-    return await User.findOne({ id: telegramUser.id });
-  } catch (err) {
-    logError(err);
-  }
-  return null;
+export const findUser = (telegramUser: TelegramUser): DbResult<IUser> => {
+  return ResultAsync.fromPromise(
+    User.findOne({ id: telegramUser.id }),
+    (error: unknown) => {
+      logError(error);
+      return error;
+    },
+  );
 };
 
 /**
@@ -82,18 +83,18 @@ export const findUser = async (telegramUser: TelegramUser): Promise<IUser> => {
  *
  * @returns An array of stored Chats
  */
-export const findChatsForUser = async (
+export const findChatsForUser = (
   telegramUser: TelegramUser,
-): Promise<DbResult<IChat[]>> => {
-  try {
-    const user = await findUser(telegramUser);
-    if (user) {
-      return okAsync(await Chat.find({ users: user._id }));
-    }
-  } catch (e) {
-    logError(e);
-    return err(e);
-  }
+): DbResult<IChat[]> => {
+  return findUser(telegramUser).andThen((user) =>
+    ResultAsync.fromPromise(
+      Chat.find({ users: user._id }),
+      (error: unknown) => {
+        logError(error);
+        return error;
+      },
+    ),
+  );
 };
 
 /**
@@ -121,23 +122,23 @@ export const findChatOptins = async (chatId: number): Promise<IOptin> => {
  *
  * @returns
  */
-export const addChat = async (
+export const addChat = (
   telegramChat: TelegramChat,
   telegramUser: TelegramUser,
-): Promise<void> => {
-  try {
-    const user = await findUser(telegramUser);
-
-    const newChat = await Chat.findOneAndUpdate(
-      { id: telegramChat.id },
-      { $setOnInsert: { id: telegramChat.id, users: [user._id] } },
-      { upsert: true, new: true },
+): DbResult<IChat> => {
+  return findUser(telegramUser).andThen((user) => {
+    return ResultAsync.fromPromise(
+      Chat.findOneAndUpdate(
+        { id: telegramChat.id },
+        { $setOnInsert: { id: telegramChat.id, users: [user._id] } },
+        { upsert: true, new: true },
+      ),
+      (error: unknown) => {
+        logError(error);
+        return error;
+      },
     );
-
-    if (newChat === null) throw Error('Failed to create telegramChat');
-  } catch (err) {
-    logError(err);
-  }
+  });
 };
 
 /**
@@ -175,19 +176,21 @@ export const addUserOptIn = async (
  *
  * @returns The stored Chats
  */
-export const getUserChatsUnwatched = async (
+export const getUserChatsUnwatched = (
   telegramUser: TelegramUser,
-): Promise<IChat[]> => {
-  try {
-    const user = await findUser(telegramUser);
-    return await Chat.find({
-      users: user._id,
-      $or: [{ watching: false }, { watching: null }],
-    });
-  } catch (err) {
-    logError(err);
-  }
-  return null;
+): DbResult<IChat[]> => {
+  return findUser(telegramUser).andThen((user) =>
+    ResultAsync.fromPromise(
+      Chat.find({
+        users: user._id,
+        $or: [{ watching: false }, { watching: null }],
+      }),
+      (error: unknown) => {
+        logError(error);
+        return error;
+      },
+    ),
+  );
 };
 
 /**
