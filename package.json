@@ -5,6 +5,7 @@
   "main": "index",
   "module": "commonjs",
   "dependencies": {
+    "@grammyjs/types": "^2.2.6",
     "dotenv": "^16.0.3",
     "express": "^4.17.1",
     "googleapis": "^110.0.0",
@@ -18,12 +19,11 @@
     "@babel/core": "^7.16.12",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-typescript": "^7.16.7",
-    "@grammyjs/types": "^2.2.6",
     "@types/express": "^4.17.13",
     "@types/jest": "^29.2.5",
     "@types/node": "^18.11.18",
     "@types/nodemon": "^1.19.1",
-    "@typescript-eslint/eslint-plugin": "^5.1.0",
+    "@typescript-eslint/eslint-plugin": "^5.48.1",
     "@typescript-eslint/parser": "^5.1.0",
     "babel-jest": "^29.3.1",
     "eslint": "^8.0.1",
@@ -35,7 +35,7 @@
     "jest": "^29.3.1",
     "prettier": "^2.3.2",
     "ts-node": "^10.2.1",
-    "typescript": "^4.5.5"
+    "typescript": "^4.9.4"
   },
   "scripts": {
     "start:local": "nodemon --watch \"src/**\" --ext \"ts,js,json\" --ignore \"src/**/*.spec.ts\" --exec \"ts-node src/devStart.ts\"",
