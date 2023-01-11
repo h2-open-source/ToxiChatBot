@@ -93,7 +93,9 @@ export const findUser = (telegramUser: TelegramUser): DbResult<IUser> => {
   return findResult.andThen((user) =>
     user !== null
       ? okAsync(user)
-      : errAsync(NotFoundError(`User ${telegramUser.username} not found`)),
+      : errAsync(
+          NotFoundError(`User with Telegram ID ${telegramUser.id} not found`),
+        ),
   );
 };
 
