@@ -1,8 +1,8 @@
 import mongoose, { ObjectId } from 'mongoose';
 import { Chat as TelegramChat, User as TelegramUser } from '@grammyjs/types';
-import { okAsync, ok, errAsync, err, Result, ResultAsync } from 'neverthrow';
+import { okAsync, errAsync, err, ResultAsync } from 'neverthrow';
 
-import { logError, logErrorAndReturn } from '../../utils/log';
+import { logError } from '../../utils/log';
 
 // TODO: move types like this into their own files
 export enum DbErrorType {
@@ -61,8 +61,8 @@ const Optin = mongoose.model('Optin', optinSchema);
  *
  * @param telegramUser The Telegram user object to persist
  */
-export const addUser = (telegramUser: TelegramUser): DbResult<IUser> => {
-  return ResultAsync.fromPromise(
+export const addUser = (telegramUser: TelegramUser): DbResult<IUser> =>
+  ResultAsync.fromPromise(
     User.findOneAndUpdate(
       { id: telegramUser.id },
       { $setOnInsert: { id: telegramUser.id } },
@@ -73,7 +73,6 @@ export const addUser = (telegramUser: TelegramUser): DbResult<IUser> => {
       return OtherError(error);
     },
   );
-};
 
 /**
  * Find a user stored in persistence.
@@ -91,11 +90,11 @@ export const findUser = (telegramUser: TelegramUser): DbResult<IUser> => {
     },
   );
 
-  return findResult.andThen((user) => {
-    return user !== null
+  return findResult.andThen((user) =>
+    user !== null
       ? okAsync(user)
-      : errAsync(NotFoundError(`User ${telegramUser.username} not found`));
-  });
+      : errAsync(NotFoundError(`User ${telegramUser.username} not found`)),
+  );
 };
 
 /**
@@ -107,14 +106,13 @@ export const findUser = (telegramUser: TelegramUser): DbResult<IUser> => {
  */
 export const findChatsForUser = (
   telegramUser: TelegramUser,
-): DbResult<IChat[]> => {
-  return findUser(telegramUser).andThen((user) =>
+): DbResult<IChat[]> =>
+  findUser(telegramUser).andThen((user) =>
     ResultAsync.fromPromise(Chat.find({ users: user._id }), (error) => {
       logError(error);
       return OtherError(error);
     }),
   );
-};
 
 /**
  * Retrieve a stored OptIn record by its Telegram Chat ID
@@ -126,8 +124,8 @@ export const findChatsForUser = (
 export const findChatOptins = async (chatId: number): Promise<IOptin> => {
   try {
     return await Optin.findOne({ chatId });
-  } catch (err) {
-    logError(err);
+  } catch (error) {
+    logError(error);
   }
 
   return null;
@@ -144,9 +142,9 @@ export const findChatOptins = async (chatId: number): Promise<IOptin> => {
 export const addChat = (
   telegramChat: TelegramChat,
   telegramUser: TelegramUser,
-): DbResult<IChat> => {
-  return findUser(telegramUser).andThen((user) => {
-    return ResultAsync.fromPromise(
+): DbResult<IChat> =>
+  findUser(telegramUser).andThen((user) =>
+    ResultAsync.fromPromise(
       Chat.findOneAndUpdate(
         { id: telegramChat.id },
         { $setOnInsert: { id: telegramChat.id, users: [user._id] } },
@@ -156,9 +154,8 @@ export const addChat = (
         logError(error);
         return OtherError(error);
       },
-    );
-  });
-};
+    ),
+  );
 
 /**
  * Record user opt-in
@@ -183,8 +180,8 @@ export const addUserOptIn = async (
     );
 
     if (newChat === null) throw Error('Failed to create optin chat');
-  } catch (err) {
-    logError(err);
+  } catch (error) {
+    logError(error);
   }
 };
 
@@ -197,8 +194,8 @@ export const addUserOptIn = async (
  */
 export const getUserChatsUnwatched = (
   telegramUser: TelegramUser,
-): DbResult<IChat[]> => {
-  return findUser(telegramUser).andThen((user) =>
+): DbResult<IChat[]> =>
+  findUser(telegramUser).andThen((user) =>
     ResultAsync.fromPromise(
       Chat.find({
         users: user._id,
@@ -210,7 +207,6 @@ export const getUserChatsUnwatched = (
       },
     ),
   );
-};
 
 /**
  * Set the watching status of the specified chat

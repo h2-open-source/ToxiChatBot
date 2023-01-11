@@ -1,5 +1,5 @@
 import { Context, InlineKeyboard } from 'grammy';
-import { ChatFromGetChat, Message } from '@grammyjs/types';
+import { ChatFromGetChat } from '@grammyjs/types';
 import { findChatsForUser } from '../../modules/db';
 import { isPrivateChat } from '../../utils/telegramUtils';
 import { hasTitle } from '../../utils/typeGuards';
@@ -21,28 +21,32 @@ export const listHandler = async (ctx: Context): Promise<void> => {
 
     chatsResult
       .asyncMap(async (chats) => {
-        const chatsDetails = await Promise.all(
-          chats.map((c) => ctx.api.getChat(c.id)),
-        );
+        if (chats.length < 1) {
+          ctx.reply(
+            'You have no groups set up yet. Try calling /start in your group.',
+          );
+        } else {
+          const chatsDetails = await Promise.all(
+            chats.map((c) => ctx.api.getChat(c.id)),
+          );
 
-        const getTitle = (chat: ChatFromGetChat) =>
-          hasTitle(chat) ? chat.title : chat.username;
+          const getTitle = (chat: ChatFromGetChat) =>
+            hasTitle(chat) ? chat.title : chat.username;
 
-        ctx.reply(
-          'Choose a group below to see a list of users that clicked the button in that group.',
-          {
-            reply_markup: chatsDetails.reduce(
-              (keyboard, chat) =>
-                keyboard.text(getTitle(chat), `list-${chat.id}`),
-              new InlineKeyboard(),
-            ),
-          },
-        );
+          ctx.reply(
+            'Choose a group below to see a list of users that clicked the button in that group.',
+            {
+              reply_markup: chatsDetails.reduce(
+                (keyboard, chat) =>
+                  keyboard.text(getTitle(chat), `list-${chat.id}`),
+                new InlineKeyboard(),
+              ),
+            },
+          );
+        }
       })
       .mapErr(() => {
-        ctx.reply(
-          'You have no groups set up yet. Try calling /start in your group.',
-        );
+        ctx.reply('Sorry, and unknown error ocurred. Please try again later.');
       });
   }
 };
