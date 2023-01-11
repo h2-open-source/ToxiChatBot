@@ -36,8 +36,7 @@
       "always-multiline"
     ],
     "indent": [
-      "error",
-      2
+      0
     ],
     "no-underscore-dangle": [
       "error",
