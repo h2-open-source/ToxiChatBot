@@ -4,4 +4,9 @@ const logError = (...err: (Error | string | unknown)[]): void =>
 
 const logMessage = (...message: string[]): void => console.log(...message);
 
-export { logMessage, logError };
+const logErrorAndReturn = (error: Error | string | unknown) => {
+  logError(error);
+  return error;
+};
+
+export { logMessage, logError, logErrorAndReturn };

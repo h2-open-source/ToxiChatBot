@@ -1,11 +1,26 @@
 import mongoose, { Model, ObjectId } from 'mongoose';
 import { Chat as TelegramChat, User as TelegramUser } from '@grammyjs/types';
-import { okAsync, err, Result, ResultAsync } from 'neverthrow';
+import { okAsync, ok, errAsync, err, Result, ResultAsync } from 'neverthrow';
 
-import { logError } from '../../utils/log';
+import { logError, logErrorAndReturn } from '../../utils/log';
 
 // TODO: move types like this into their own files
-export type DbResult<T> = ResultAsync<T, Error | unknown>;
+export enum DbErrorType {
+  NotFound,
+  Other,
+}
+export type DbError =
+  | { type: DbErrorType.NotFound; message?: string }
+  | { type: DbErrorType.Other; error?: Error | unknown };
+export const NotFoundError = (message = ''): DbError => ({
+  type: DbErrorType.NotFound,
+  message,
+});
+export const OtherError = (error?: Error | unknown): DbError => ({
+  type: DbErrorType.Other,
+  error,
+});
+export type DbResult<T> = ResultAsync<T, DbError>;
 
 // TODO: move schemas (and models?) to their own files
 const chatSchema = new mongoose.Schema({
@@ -46,17 +61,18 @@ const Optin: Model<IOptin> = mongoose.model('Optin', optinSchema);
  *
  * @param telegramUser The Telegram user object to persist
  */
-export const addUser = async (telegramUser: TelegramUser): Promise<void> => {
-  try {
-    await User.findOneAndUpdate(
+export const addUser = (telegramUser: TelegramUser): DbResult<IUser> => {
+  return ResultAsync.fromPromise(
+    User.findOneAndUpdate(
       { id: telegramUser.id },
       { $setOnInsert: { id: telegramUser.id } },
       { upsert: true, new: true },
-    );
-  } catch (err) {
-    // TODO: This (and others like it) should return something like an error object, so the caller knowr what happened.
-    logError(err);
-  }
+    ),
+    (error) => {
+      logError(error);
+      return OtherError(error);
+    },
+  );
 };
 
 /**
@@ -67,13 +83,19 @@ export const addUser = async (telegramUser: TelegramUser): Promise<void> => {
  * @returns The stored User
  */
 export const findUser = (telegramUser: TelegramUser): DbResult<IUser> => {
-  return ResultAsync.fromPromise(
+  const findResult = ResultAsync.fromPromise(
     User.findOne({ id: telegramUser.id }),
-    (error: unknown) => {
+    (error) => {
       logError(error);
-      return error;
+      return OtherError({ error });
     },
   );
+
+  return findResult.andThen((user) => {
+    return user !== null
+      ? okAsync(user)
+      : errAsync(NotFoundError(`User ${telegramUser.username} not found`));
+  });
 };
 
 /**
@@ -87,13 +109,10 @@ export const findChatsForUser = (
   telegramUser: TelegramUser,
 ): DbResult<IChat[]> => {
   return findUser(telegramUser).andThen((user) =>
-    ResultAsync.fromPromise(
-      Chat.find({ users: user._id }),
-      (error: unknown) => {
-        logError(error);
-        return error;
-      },
-    ),
+    ResultAsync.fromPromise(Chat.find({ users: user._id }), (error) => {
+      logError(error);
+      return OtherError(error);
+    }),
   );
 };
 
@@ -133,9 +152,9 @@ export const addChat = (
         { $setOnInsert: { id: telegramChat.id, users: [user._id] } },
         { upsert: true, new: true },
       ),
-      (error: unknown) => {
+      (error) => {
         logError(error);
-        return error;
+        return OtherError(error);
       },
     );
   });
@@ -185,9 +204,9 @@ export const getUserChatsUnwatched = (
         users: user._id,
         $or: [{ watching: false }, { watching: null }],
       }),
-      (error: unknown) => {
+      (error) => {
         logError(error);
-        return error;
+        return OtherError(error);
       },
     ),
   );

@@ -39,10 +39,10 @@ export const listHandler = async (ctx: Context): Promise<void> => {
           },
         );
       })
-      .mapErr((error) =>
+      .mapErr(() => {
         ctx.reply(
           'You have no groups set up yet. Try calling /start in your group.',
-        ),
-      );
+        );
+      });
   }
 };
