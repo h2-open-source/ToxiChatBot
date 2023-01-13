@@ -44,14 +44,12 @@ const safePromises = (...args: Promise<unknown>[]) =>
  */
 export const listGroup = async (ctx: Context): Promise<void> => {
   const groupId = Number(ctx.match[1]);
-  const chatOptinsResult = await findChatOptins(groupId);
-
   const respond = (message: string) =>
     safePromises(ctx.answerCallbackQuery(), ctx.reply(message));
 
   // TODO: Show the 'typing' chat action
 
-  chatOptinsResult
+  await findChatOptins(groupId)
     .map((chat) =>
       ResultAsync.fromPromise(
         Promise.all(chat.users.map((u) => ctx.api.getChat(u))),
