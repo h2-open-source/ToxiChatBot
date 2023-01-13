@@ -106,15 +106,15 @@ export const findChatsForUser = (
  *
  * @returns The Optin document
  */
-export const findChatOptins = async (chatId: number): Promise<IOptin> => {
-  try {
-    return await Optin.findOne({ chatId });
-  } catch (error) {
+export const findChatOptins = (chatId: number): DbResult<IOptin> =>
+  ResultAsync.fromPromise(Optin.findOne({ chatId }), (error) => {
     logError(error);
-  }
-
-  return null;
-};
+    return OtherError({ error });
+  }).andThen((optin) =>
+    optin !== null
+      ? okAsync(optin)
+      : errAsync(NotFoundError(`Chat ${chatId} has no optins`)),
+  );
 
 /**
  * Persist chat and add the user to it.
