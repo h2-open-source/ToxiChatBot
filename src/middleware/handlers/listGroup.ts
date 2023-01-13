@@ -3,8 +3,10 @@ import { Chat, ChatFromGetChat } from '@grammyjs/types';
 import { okAsync, ResultAsync } from 'neverthrow';
 
 import { isUser } from '../../utils/typeGuards';
-import { findChatOptins } from '../../modules/db';
 import { logError } from '../../utils/log';
+import { safePromises } from '../../utils/result';
+import { ascending } from '../../utils/sort';
+import { findChatOptins } from '../../modules/db';
 import { DbErrorType } from '../../modules/db/types';
 
 const hasFullName = (user: Chat.PrivateChat) =>
@@ -19,23 +21,6 @@ const formatName = (user: ChatFromGetChat) => {
 
   return user.username ? `${name} (@${user.username})` : name;
 };
-
-// TODO: move to own file
-const ascending = (a: unknown, b: unknown) => (a > b ? 1 : -1);
-const descending = (a: unknown, b: unknown) => (a < b ? 1 : -1);
-
-// TODO: move to own file
-const okOrLog = <T>(
-  unsafePromise: Promise<T>,
-  message = `Error thrown in unsafe promise: ${unsafePromise.toString()}`,
-) =>
-  ResultAsync.fromPromise(unsafePromise, (error) =>
-    logError({ message, error }),
-  );
-
-// TODO: move to own file
-const safePromises = (...args: Promise<unknown>[]) =>
-  ResultAsync.combine(args.map((arg: Promise<unknown>) => okOrLog(arg)));
 
 /**
  * Replies with list of users that have clicked the opt-in button in the specified group.
