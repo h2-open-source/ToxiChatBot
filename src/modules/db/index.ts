@@ -1,5 +1,8 @@
 import mongoose, { ObjectId } from 'mongoose';
 import { Chat as TelegramChat, User as TelegramUser } from '@grammyjs/types';
+import { okAsync, errAsync, err, ResultAsync } from 'neverthrow';
+
+import { DbResult, NotFoundError, OtherError } from './types';
 import { logError } from '../../utils/log';
 
 // TODO: move schemas (and models?) to their own files
@@ -41,18 +44,18 @@ const Optin = mongoose.model('Optin', optinSchema);
  *
  * @param telegramUser The Telegram user object to persist
  */
-export const addUser = async (telegramUser: TelegramUser): Promise<void> => {
-  try {
-    await User.findOneAndUpdate(
+export const addUser = (telegramUser: TelegramUser): DbResult<IUser> =>
+  ResultAsync.fromPromise(
+    User.findOneAndUpdate(
       { id: telegramUser.id },
       { $setOnInsert: { id: telegramUser.id } },
       { upsert: true, new: true },
-    );
-  } catch (err) {
-    // TODO: This (and others like it) should return something like an error object, so the caller knowr what happened.
-    logError(err);
-  }
-};
+    ),
+    (error) => {
+      logError(error);
+      return OtherError(error);
+    },
+  );
 
 /**
  * Find a user stored in persistence.
@@ -61,13 +64,22 @@ export const addUser = async (telegramUser: TelegramUser): Promise<void> => {
  *
  * @returns The stored User
  */
-export const findUser = async (telegramUser: TelegramUser): Promise<IUser> => {
-  try {
-    return await User.findOne({ id: telegramUser.id });
-  } catch (err) {
-    logError(err);
-  }
-  return null;
+export const findUser = (telegramUser: TelegramUser): DbResult<IUser> => {
+  const findResult = ResultAsync.fromPromise(
+    User.findOne({ id: telegramUser.id }),
+    (error) => {
+      logError(error);
+      return OtherError({ error });
+    },
+  );
+
+  return findResult.andThen((user) =>
+    user !== null
+      ? okAsync(user)
+      : errAsync(
+          NotFoundError(`User with Telegram ID ${telegramUser.id} not found`),
+        ),
+  );
 };
 
 /**
@@ -77,19 +89,15 @@ export const findUser = async (telegramUser: TelegramUser): Promise<IUser> => {
  *
  * @returns An array of stored Chats
  */
-export const findChatsForUser = async (
+export const findChatsForUser = (
   telegramUser: TelegramUser,
-): Promise<IChat[]> => {
-  try {
-    const user = await findUser(telegramUser);
-    if (user) {
-      return await Chat.find({ users: user._id });
-    }
-  } catch (err) {
-    logError(err);
-  }
-  return null;
-};
+): DbResult<IChat[]> =>
+  findUser(telegramUser).andThen((user) =>
+    ResultAsync.fromPromise(Chat.find({ users: user._id }), (error) => {
+      logError(error);
+      return OtherError(error);
+    }),
+  );
 
 /**
  * Retrieve a stored OptIn record by its Telegram Chat ID
@@ -98,15 +106,15 @@ export const findChatsForUser = async (
  *
  * @returns The Optin document
  */
-export const findChatOptins = async (chatId: number): Promise<IOptin> => {
-  try {
-    return await Optin.findOne({ chatId });
-  } catch (err) {
-    logError(err);
-  }
-
-  return null;
-};
+export const findChatOptins = (chatId: number): DbResult<IOptin> =>
+  ResultAsync.fromPromise(Optin.findOne({ chatId }), (error) => {
+    logError(error);
+    return OtherError({ error });
+  }).andThen((optin) =>
+    optin !== null
+      ? okAsync(optin)
+      : errAsync(NotFoundError(`Chat ${chatId} has no optins`)),
+  );
 
 /**
  * Persist chat and add the user to it.
@@ -116,24 +124,23 @@ export const findChatOptins = async (chatId: number): Promise<IOptin> => {
  *
  * @returns
  */
-export const addChat = async (
+export const addChat = (
   telegramChat: TelegramChat,
   telegramUser: TelegramUser,
-): Promise<void> => {
-  try {
-    const user = await findUser(telegramUser);
-
-    const newChat = await Chat.findOneAndUpdate(
-      { id: telegramChat.id },
-      { $setOnInsert: { id: telegramChat.id, users: [user._id] } },
-      { upsert: true, new: true },
-    );
-
-    if (newChat === null) throw Error('Failed to create telegramChat');
-  } catch (err) {
-    logError(err);
-  }
-};
+): DbResult<IChat> =>
+  findUser(telegramUser).andThen((user) =>
+    ResultAsync.fromPromise(
+      Chat.findOneAndUpdate(
+        { id: telegramChat.id },
+        { $setOnInsert: { id: telegramChat.id, users: [user._id] } },
+        { upsert: true, new: true },
+      ),
+      (error) => {
+        logError(error);
+        return OtherError(error);
+      },
+    ),
+  );
 
 /**
  * Record user opt-in
@@ -158,8 +165,8 @@ export const addUserOptIn = async (
     );
 
     if (newChat === null) throw Error('Failed to create optin chat');
-  } catch (err) {
-    logError(err);
+  } catch (error) {
+    logError(error);
   }
 };
 
@@ -170,20 +177,21 @@ export const addUserOptIn = async (
  *
  * @returns The stored Chats
  */
-export const getUserChatsUnwatched = async (
+export const getUserChatsUnwatched = (
   telegramUser: TelegramUser,
-): Promise<IChat[]> => {
-  try {
-    const user = await findUser(telegramUser);
-    return await Chat.find({
-      users: user._id,
-      $or: [{ watching: false }, { watching: null }],
-    });
-  } catch (err) {
-    logError(err);
-  }
-  return null;
-};
+): DbResult<IChat[]> =>
+  findUser(telegramUser).andThen((user) =>
+    ResultAsync.fromPromise(
+      Chat.find({
+        users: user._id,
+        $or: [{ watching: false }, { watching: null }],
+      }),
+      (error) => {
+        logError(error);
+        return OtherError(error);
+      },
+    ),
+  );
 
 /**
  * Set the watching status of the specified chat
@@ -194,12 +202,13 @@ export const getUserChatsUnwatched = async (
 export const setChatWatching = async (
   telegramChat: TelegramChat | number,
   watching = true,
-): Promise<void> => {
+): Promise<DbResult<IChat>> => {
   try {
     const id =
       typeof telegramChat === 'number' ? telegramChat : telegramChat.id;
-    await Chat.findOneAndUpdate({ id }, { watching });
-  } catch (err) {
-    logError(err);
+    return okAsync(await Chat.findOneAndUpdate({ id }, { watching }));
+  } catch (e) {
+    logError(e);
+    return err(e);
   }
 };
